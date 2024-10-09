@@ -2,7 +2,7 @@
 
 Bienvenido al repositorio del proyecto **Vinilos**, una aplicación móvil para gestionar álbumes de vinilos y artistas. Este documento proporciona una guía de cómo navegar por la documentación del proyecto, junto con los enlaces a las diferentes páginas de la Wiki.
 
-## 📚 **Índice de Documentación**
+## 📚 **Índice**
 1. ### 🏁 [Inception - Fase Inicial](https://github.com/lordmkichavi-andes/MISW4203-202415-GrupoXYZ/wiki)
    - Detalles sobre la planificación inicial del proyecto, backlog y primeras decisiones de diseño UX/UI.
 
