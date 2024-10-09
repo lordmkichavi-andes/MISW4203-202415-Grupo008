@@ -4,7 +4,7 @@ Bienvenido al repositorio del proyecto **Vinilos**, una aplicación móvil para 
 
 ## 📚 **Índice**
 1. ### 🏁 [Inception - Fase Inicial](https://github.com/lordmkichavi-andes/MISW4203-202415-GrupoXYZ/wiki)
-   - Detalles sobre la planificación inicial del proyecto, backlog y primeras decisiones de diseño UX/UI.
+   - Detalles sobre la planificación inicial del proyecto, backlog y decisiones iniciales de diseño UX/UI.
 
 2. ### 🚀 [Sprint 1](https://github.com/lordmkichavi-andes/MISW4203-202415-GrupoXYZ/wiki/%F0%9F%9A%80-Sprint-1)
    - Implementación de las siguientes historias de usuario:
