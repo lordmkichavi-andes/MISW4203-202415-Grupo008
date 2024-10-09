@@ -14,6 +14,7 @@ Bienvenido al repositorio del proyecto Vinilos, una aplicación móvil para gest
 
 3. ### 🚀 [Sprint 2](https://github.com/lordmkichavi-andes/MISW4203-202415-GrupoXYZ/wiki/%F0%9F%9A%80-Sprint-2)
    - Implementación de las siguientes historias de usuario:
+     - **HU02**: Consultar la información detallada del álbum
      - **HU04**: Asociar tracks con un álbum
      - **HU05**: Comentar álbum
 
