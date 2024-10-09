@@ -26,7 +26,7 @@ Bienvenido al repositorio del proyecto Vinilos, una aplicación móvil para gest
 5. ### 🎨 [Diseño de UX/UI](https://github.com/tuusuario/repositorio/wiki/Diseño-UX-UI)
    - Documentación sobre la interfaz de usuario.
 
-6. ### 📝 [Evidencias](https://github.com/tuusuario/repositorio/wiki/Evidencias)
+6. ### 📝 [Evidencias](https://github.com/lordmkichavi-andes/MISW4203-202415-GrupoXYZ/wiki/%F0%9F%93%9D-Evidencias-y-Reuniones)
    - Registro de las reuniones del equipo, actas y bitácoras de las sesiones semanales.
 
 ---
