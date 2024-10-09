@@ -24,9 +24,9 @@ Bienvenido al repositorio del proyecto **Vinilos**, una aplicación móvil para 
      - **HU08**: Consultar el listado de artistas
 
 5. ### 🎨 [Diseño de UX/UI](https://github.com/tuusuario/repositorio/wiki/Diseño-UX-UI)
-   - Documentación sobre la interfaz de usuario (UI) y la experiencia de usuario (UX), incluyendo el prototipo navegable.
+   - Documentación sobre la interfaz de usuario.
 
-6. ### 📝 [Evidencias y Reuniones](https://github.com/tuusuario/repositorio/wiki/Evidencias)
+6. ### 📝 [Evidencias](https://github.com/tuusuario/repositorio/wiki/Evidencias)
    - Registro de las reuniones del equipo, actas y bitácoras de las sesiones semanales.
 
 ---
