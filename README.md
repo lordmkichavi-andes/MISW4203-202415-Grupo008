@@ -11,20 +11,17 @@ Bienvenido al repositorio del proyecto **Vinilos**, una aplicación móvil para 
      - **HU01**: Crear álbum
      - **HU02**: Consultar la información detallada del álbum
      - **HU03**: Consultar catálogo de álbumes
-   - Progreso, objetivos y entregables de la primera iteración.
 
-3. ### 🚀 [Sprint 2](https://github.com/tuusuario/repositorio/wiki/Sprint-2)
+3. ### 🚀 [Sprint 2](https://github.com/lordmkichavi-andes/MISW4203-202415-GrupoXYZ/wiki/%F0%9F%9A%80-Sprint-2)
    - Implementación de las siguientes historias de usuario:
      - **HU04**: Asociar tracks con un álbum
      - **HU05**: Comentar álbum
-   - Objetivos y resultados del segundo sprint.
 
 4. ### 🚀 [Sprint 3](https://github.com/tuusuario/repositorio/wiki/Sprint-3)
    - Implementación de las siguientes historias de usuario:
      - **HU11**: Agregar álbum a coleccionista (reemplazo de HU06)
      - **HU07**: Consultar la información detallada de un artista
      - **HU08**: Consultar el listado de artistas
-   - Resultados finales y cierre del proyecto.
 
 5. ### 🎨 [Diseño de UX/UI](https://github.com/tuusuario/repositorio/wiki/Diseño-UX-UI)
    - Documentación sobre la interfaz de usuario (UI) y la experiencia de usuario (UX), incluyendo el prototipo navegable.
