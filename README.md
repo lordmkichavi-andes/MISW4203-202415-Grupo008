@@ -17,7 +17,7 @@ Bienvenido al repositorio del proyecto Vinilos, una aplicación móvil para gest
      - **HU04**: Asociar tracks con un álbum
      - **HU05**: Comentar álbum
 
-4. ### 🚀 [Sprint 3](https://github.com/tuusuario/repositorio/wiki/Sprint-3)
+4. ### 🚀 [Sprint 3](https://github.com/lordmkichavi-andes/MISW4203-202415-GrupoXYZ/wiki/%F0%9F%9A%80-Sprint-3)
    - Implementación de las siguientes historias de usuario:
      - **HU11**: Agregar álbum a coleccionista (reemplazo de HU06)
      - **HU07**: Consultar la información detallada de un artista
