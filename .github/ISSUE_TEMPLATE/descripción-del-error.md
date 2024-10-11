@@ -7,31 +7,20 @@ assignees: ''
 
 ---
 
-Pasos para reproducir
-Pasos para reproducir el comportamiento:
+Comportamiento esperado
+Describe de manera clara y concisa qué esperabas que sucediera al ejecutar o desarrollar en Android Studio.
 
-Ve a '...'
-Haz clic en '...'
-Desplázate hacia abajo hasta '...'
-Observa el error
+Capturas de pantalla
+Si es posible, incluye capturas de pantalla que ayuden a visualizar el problema.
 
+Entorno de desarrollo (completa la siguiente información):
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+SO: [ej. Windows, macOS, Linux]
+Versión de Android Studio: [ej. Arctic Fox 2020.3.1]
+Versión de Gradle: [ej. 7.0.2]
+Versión del SDK: [ej. Android SDK 30]
+Dispositivo (completa la siguiente información, si aplica):
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
-**Additional context**
-Add any other context about the problem here.
+Dispositivo físico/emulador: [ej. Pixel 4, emulador de Android]
+Versión de Android: [ej. Android 11]
+API Level: [ej. API 30]
