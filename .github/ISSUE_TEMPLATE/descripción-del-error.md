@@ -7,20 +7,23 @@ assignees: ''
 
 ---
 
-Comportamiento esperado
-Describe de manera clara y concisa qué esperabas que sucediera al ejecutar o desarrollar en Android Studio.
+### **Comportamiento esperado**  
+Describe de manera clara y concisa lo que esperabas que sucediera al desarrollar o ejecutar en Android Studio.
 
-Capturas de pantalla
-Si es posible, incluye capturas de pantalla que ayuden a visualizar el problema.
+### **Capturas de pantalla**  
+Si es posible, añade capturas de pantalla para visualizar mejor el problema.
 
-Entorno de desarrollo (completa la siguiente información):
+### **Entorno de desarrollo**  
+- **Sistema Operativo**: `Windows`, `macOS`, `Linux`  
+- **Versión de Android Studio**: `Arctic Fox 2020.3.1`  
+- **Versión de Gradle**: `7.0.2`  
+- **Versión del SDK**: `Android SDK 30`
 
-SO: [ej. Windows, macOS, Linux]
-Versión de Android Studio: [ej. Arctic Fox 2020.3.1]
-Versión de Gradle: [ej. 7.0.2]
-Versión del SDK: [ej. Android SDK 30]
-Dispositivo (completa la siguiente información, si aplica):
+### **Dispositivo**  
+- **Dispositivo**: `Físico` o `Emulador`  
+- **Modelo/Versión**: `Pixel 4`, `Emulador de Android`  
+- **Versión de Android**: `Android 11`  
+- **Nivel de API**: `API 30`
 
-Dispositivo físico/emulador: [ej. Pixel 4, emulador de Android]
-Versión de Android: [ej. Android 11]
-API Level: [ej. API 30]
+### **Contexto adicional**  
+Agrega cualquier otro detalle relevante, como configuraciones específicas, plugins instalados o cualquier otra información útil para entender el problema.
