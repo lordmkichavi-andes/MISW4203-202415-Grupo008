@@ -24,6 +24,3 @@ Si es posible, añade capturas de pantalla para visualizar mejor el problema.
 - **Modelo/Versión**: `Pixel 4`, `Emulador de Android`  
 - **Versión de Android**: `Android 11`  
 - **Nivel de API**: `API 30`
-
-### **Contexto adicional**  
-Agrega cualquier otro detalle relevante, como configuraciones específicas, plugins instalados o cualquier otra información útil para entender el problema.
