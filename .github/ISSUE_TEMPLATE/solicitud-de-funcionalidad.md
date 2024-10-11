@@ -1,5 +1,5 @@
 ---
-name: Feature request
+name: Solicitud de Funcionalidad
 about: Suggest an idea for this project
 title: ''
 labels: desarrollo
