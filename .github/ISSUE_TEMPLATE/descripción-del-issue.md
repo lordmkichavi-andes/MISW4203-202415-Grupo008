@@ -1,5 +1,5 @@
 ---
-name: Descripción del error
+name: Descripción del Issue
 about: Reporte del Issue
 title: ''
 labels: bug
