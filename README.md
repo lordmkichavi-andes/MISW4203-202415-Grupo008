@@ -23,7 +23,7 @@ Bienvenido al repositorio del proyecto Vinilos, una aplicación móvil para gest
      - **HU06**: Consultar la información detallada de coleccionista
      - **HU08**: Asociar tracks con un álbum
 
-5. ### 🎨 [Diseño de UX/UI](https://github.com/tuusuario/repositorio/wiki/Diseño-UX-UI)
+5. ### 🎨 [Diseño de UX/UI](https://www.figma.com/design/LHPjiMR6PoKYuAWbi2r7eM/Vinilos?node-id=0-1&node-type=canvas&t=hQAK8jVM35NhaM17-0)
    - Documentación sobre la interfaz de usuario.
 
 6. ### 📝 [Evidencias](https://github.com/lordmkichavi-andes/MISW4203-202415-GrupoXYZ/wiki/%F0%9F%93%9D-Evidencias-y-Reuniones)
