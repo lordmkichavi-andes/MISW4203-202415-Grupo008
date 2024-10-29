@@ -95,6 +95,7 @@ fun MainSelectionScreen(navController: NavController, viewModel: MainSelectionVi
                 OutlinedButton(
                     onClick = {
                         viewModel.selectProfile("Coleccionista")
+                        navController.navigate("add_album")
                     },
                     modifier = Modifier
                         .fillMaxWidth()
