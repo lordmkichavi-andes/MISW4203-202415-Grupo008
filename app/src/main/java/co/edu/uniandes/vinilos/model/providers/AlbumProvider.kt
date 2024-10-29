@@ -27,7 +27,7 @@ class AlbumProvider {
                     // Imprimir en consola el listado de álbumes
                     albums.forEach { album ->
                         println("Álbum: ${album.name}, Artista: ${album.genre}, Año: ${album.releaseDate}")
-                        album.tracks.forEach { track ->
+                        album.tracks?.forEach { track ->
                             println("    Pista: ${track.name}, Duración: ${track.duration} segundos")
                         }
                     }

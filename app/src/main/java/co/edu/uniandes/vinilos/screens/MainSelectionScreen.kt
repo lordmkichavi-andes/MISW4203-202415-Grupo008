@@ -14,12 +14,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import co.edu.uniandes.vinilos.R
 import co.edu.uniandes.vinilos.viewmodel.MainSelectionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainSelectionScreen(viewModel: MainSelectionViewModel = viewModel()) {
+fun MainSelectionScreen(navController: NavController, viewModel: MainSelectionViewModel = viewModel()) {
 
     val selectedProfile by viewModel.selectedProfile.collectAsState()
 
