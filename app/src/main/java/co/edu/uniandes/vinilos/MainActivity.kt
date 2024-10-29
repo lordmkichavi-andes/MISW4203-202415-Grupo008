@@ -1,9 +1,10 @@
 package co.edu.uniandes.vinilos
 
-import MainSelectionScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.navigation.compose.rememberNavController
+import co.edu.uniandes.vinilos.nav.NavGraph
 import co.edu.uniandes.vinilos.ui.theme.VinilosTheme
 
 class MainActivity : ComponentActivity() {
@@ -11,7 +12,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             VinilosTheme {
-                MainSelectionScreen()
+                // Inicializa el NavController
+                val navController = rememberNavController()
+                // Configura el NavHost
+                NavGraph(navController)
+
             }
         }
     }
