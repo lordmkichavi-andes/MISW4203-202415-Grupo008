@@ -78,6 +78,7 @@ fun MainSelectionScreen(navController: NavController, viewModel: MainSelectionVi
                 Button(
                     onClick = {
                         viewModel.selectProfile("Usuario")
+                        navController.navigate("get_albumes")
                     },
                     modifier = Modifier
                         .fillMaxWidth()
