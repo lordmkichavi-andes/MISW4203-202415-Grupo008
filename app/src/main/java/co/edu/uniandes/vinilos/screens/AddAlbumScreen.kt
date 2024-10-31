@@ -52,6 +52,7 @@ import androidx.navigation.NavController
 import co.edu.uniandes.vinilos.model.models.Album
 import co.edu.uniandes.vinilos.model.providers.AlbumProviderAPI
 import co.edu.uniandes.vinilos.model.repository.AlbumRepository
+import co.edu.uniandes.vinilos.ui.components.MainScreenWithBottomBar
 import co.edu.uniandes.vinilos.viewmodel.AlbumViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -108,194 +109,202 @@ fun AddAlbumnScreen(navController: NavController, viewModel: AlbumViewModel = Al
                 validateField(description) &&  validateField(genre) && validateField(recordLabel)
     }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "Vinilos") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
-            )
-        }
-    ) { paddingValues -> // Padding para el contenido principal
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .padding(paddingValues) // Aplica padding del Scaffold
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.Start
-        ) {
-            Text(
-                text = "Agregar un nuevo album",
-                style = MaterialTheme.typography.headlineLarge.copy(
-                    fontWeight = FontWeight.Bold
-                ),
-                fontSize = 24.sp
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            OutlinedTextField(
-                value = name,
-                onValueChange = {
-                    name = it
-                    hasNameFieldError = !validateField(field = name)
-                    isFormValid = isFormValid()
-                                },
-                label = { Text("Nombre") },
-                placeholder = { Text("Ej: Pablo Perez") },
-                isError = hasNameFieldError,
-                modifier = Modifier.fillMaxWidth(),
-                colors = textFieldColors,
-                trailingIcon = {
-                    if(hasNameFieldError){
-                        Icon(
-                            imageVector = Icons.Filled.Error,
-                            tint = Color.hsl(4F, 0.61F, 0.27F),
-                            contentDescription = "Select date"
+    MainScreenWithBottomBar(
+        navController = navController,
+        initialTitle = "",
+        onOptionSelected = { route ->
+            navController.navigate(route)
+        },
+        showBackIcon = true,
+        backDestination = "get_albumes"
+    ) {
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                topBar = {
+                    TopAppBar(
+                        title = { Text(text = "Vinilos") },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.primary
                         )
-                    }
-                }
-
-            )
-            if (hasNameFieldError) {
-                ErrorTextInfo(
-                    text = "El nombre del albúm es obligatorio"
-                )
-            }
-
-            OutlinedTextField(
-                value = cover,
-                onValueChange = {
-                    cover = it
-                    hasCoverFieldError = !validateField(field = cover)
-                    isFormValid = isFormValid()
-                                },
-                label = { Text("Portada") },
-                placeholder = { Text("Ej: https://i.pinimg.com/image.jpg") },
-                isError =  hasCoverFieldError,
-                modifier = Modifier.fillMaxWidth(),
-                colors = textFieldColors,
-                trailingIcon = {
-                    if(hasCoverFieldError){
-                        Icon(
-                            imageVector = Icons.Filled.Error,
-                            tint = Color.hsl(4F, 0.61F, 0.27F),
-                            contentDescription = "Select date"
-                        )
-                    }
-                }
-            )
-            if (hasCoverFieldError) {
-                ErrorTextInfo(
-                    text = "La portada del albúm es obligatoria"
-                )
-            }
-
-            DatePickerDocked(
-                onDateSelected = { selectedDate ->
-                    val date = Date(selectedDate!!)
-                    releaseDate = SimpleDateFormat("dd/MM/yyy", Locale.getDefault()).format(date)
-                    hasReleaseDateFieldError = !isDateValid(releaseDate)
-                    isFormValid = isFormValid()
-                },
-                onDismiss = {  }
-            )
-
-
-            OutlinedTextField(
-                value = description,
-                onValueChange = {
-                    description = it
-                    hasDescriptionFieldError = !validateField(description)
-                    isFormValid = isFormValid()
-                                },
-                label = { Text("Descripción") },
-                isError =  hasDescriptionFieldError,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp), // Altura para permitir múltiples líneas
-                maxLines = 5, // Define el límite de líneas (o elimina para ilimitado)
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Default
-                ),
-                colors = textFieldColors
-            )
-            OutlinedTextField(
-                value = genre ,
-                onValueChange = {
-                    genre  = it
-                    hasGenreFieldError = !validateField(genre)
-                    isFormValid = isFormValid()
-                                },
-                label = { Text("Género") },
-                isError = hasGenreFieldError,
-                modifier = Modifier.fillMaxWidth(),
-                colors = textFieldColors
-            )
-
-            OutlinedTextField(
-                value = recordLabel  ,
-                onValueChange = {
-                    recordLabel   = it
-                    hasRecordLabelFieldError = !validateField(recordLabel)
-                    isFormValid = isFormValid()
-                                },
-                label = { Text("Sello discográfico") },
-                isError = hasRecordLabelFieldError,
-                modifier = Modifier.fillMaxWidth(),
-                colors = textFieldColors,
-                trailingIcon = {
-                    if(hasRecordLabelFieldError){
-                        Icon(
-                            imageVector = Icons.Filled.Error,
-                            tint = Color.hsl(4F, 0.61F, 0.27F),
-                            contentDescription = "Select date"
-                        )
-                    }
-                }
-            )
-            if (hasRecordLabelFieldError) {
-                ErrorTextInfo(
-                    text = "El sello discográfico es obligatorio."
-                )
-            }
-            if(!isFormValid) {
-                ErrorBackgroundText("Todos los campos son obligatorios")
-            }
-
-            // Botón para agregar el nuevo elemento a la lista
-            Button(
-                onClick = {
-                    val newAlbum = Album(
-                        name = name,
-                        cover = cover,
-                        releaseDate = releaseDate,
-                        description = description,
-                        genre = genre,
-                        recordLabel = recordLabel,
                     )
-                    viewModel.addAlbum(newAlbum)
-                },
-                enabled = isFormValid(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Black,
-                    contentColor = Color.White
-                )
-            ) {
-                Text(text = "Agregar", fontSize = 18.sp)
+                }
+            ) { paddingValues -> // Padding para el contenido principal
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(scrollState)
+                        .padding(paddingValues) // Aplica padding del Scaffold
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text(
+                        text = "Agregar un nuevo album",
+                        style = MaterialTheme.typography.headlineLarge.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        fontSize = 24.sp
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    OutlinedTextField(
+                        value = name,
+                        onValueChange = {
+                            name = it
+                            hasNameFieldError = !validateField(field = name)
+                            isFormValid = isFormValid()
+                        },
+                        label = { Text("Nombre") },
+                        placeholder = { Text("Ej: Pablo Perez") },
+                        isError = hasNameFieldError,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = textFieldColors,
+                        trailingIcon = {
+                            if(hasNameFieldError){
+                                Icon(
+                                    imageVector = Icons.Filled.Error,
+                                    tint = Color.hsl(4F, 0.61F, 0.27F),
+                                    contentDescription = "Select date"
+                                )
+                            }
+                        }
+
+                    )
+                    if (hasNameFieldError) {
+                        ErrorTextInfo(
+                            text = "El nombre del albúm es obligatorio"
+                        )
+                    }
+
+                    OutlinedTextField(
+                        value = cover,
+                        onValueChange = {
+                            cover = it
+                            hasCoverFieldError = !validateField(field = cover)
+                            isFormValid = isFormValid()
+                        },
+                        label = { Text("Portada") },
+                        placeholder = { Text("Ej: https://i.pinimg.com/image.jpg") },
+                        isError =  hasCoverFieldError,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = textFieldColors,
+                        trailingIcon = {
+                            if(hasCoverFieldError){
+                                Icon(
+                                    imageVector = Icons.Filled.Error,
+                                    tint = Color.hsl(4F, 0.61F, 0.27F),
+                                    contentDescription = "Select date"
+                                )
+                            }
+                        }
+                    )
+                    if (hasCoverFieldError) {
+                        ErrorTextInfo(
+                            text = "La portada del albúm es obligatoria"
+                        )
+                    }
+
+                    DatePickerDocked(
+                        onDateSelected = { selectedDate ->
+                            val date = Date(selectedDate!!)
+                            releaseDate = SimpleDateFormat("dd/MM/yyy", Locale.getDefault()).format(date)
+                            hasReleaseDateFieldError = !isDateValid(releaseDate)
+                            isFormValid = isFormValid()
+                        },
+                        onDismiss = {  }
+                    )
+
+
+                    OutlinedTextField(
+                        value = description,
+                        onValueChange = {
+                            description = it
+                            hasDescriptionFieldError = !validateField(description)
+                            isFormValid = isFormValid()
+                        },
+                        label = { Text("Descripción") },
+                        isError =  hasDescriptionFieldError,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(150.dp), // Altura para permitir múltiples líneas
+                        maxLines = 5, // Define el límite de líneas (o elimina para ilimitado)
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Default
+                        ),
+                        colors = textFieldColors
+                    )
+                    OutlinedTextField(
+                        value = genre ,
+                        onValueChange = {
+                            genre  = it
+                            hasGenreFieldError = !validateField(genre)
+                            isFormValid = isFormValid()
+                        },
+                        label = { Text("Género") },
+                        isError = hasGenreFieldError,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = textFieldColors
+                    )
+
+                    OutlinedTextField(
+                        value = recordLabel  ,
+                        onValueChange = {
+                            recordLabel   = it
+                            hasRecordLabelFieldError = !validateField(recordLabel)
+                            isFormValid = isFormValid()
+                        },
+                        label = { Text("Sello discográfico") },
+                        isError = hasRecordLabelFieldError,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = textFieldColors,
+                        trailingIcon = {
+                            if(hasRecordLabelFieldError){
+                                Icon(
+                                    imageVector = Icons.Filled.Error,
+                                    tint = Color.hsl(4F, 0.61F, 0.27F),
+                                    contentDescription = "Select date"
+                                )
+                            }
+                        }
+                    )
+                    if (hasRecordLabelFieldError) {
+                        ErrorTextInfo(
+                            text = "El sello discográfico es obligatorio."
+                        )
+                    }
+                    if(!isFormValid) {
+                        ErrorBackgroundText("Todos los campos son obligatorios")
+                    }
+
+                    // Botón para agregar el nuevo elemento a la lista
+                    Button(
+                        onClick = {
+                            val newAlbum = Album(
+                                name = name,
+                                cover = cover,
+                                releaseDate = releaseDate,
+                                description = description,
+                                genre = genre,
+                                recordLabel = recordLabel,
+                            )
+                            viewModel.addAlbum(newAlbum)
+                        },
+                        enabled = isFormValid(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text(text = "Agregar", fontSize = 18.sp)
+                    }
+
+
+                }
             }
 
-
-        }
     }
-
-
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
