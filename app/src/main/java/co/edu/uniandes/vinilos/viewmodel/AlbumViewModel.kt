@@ -7,17 +7,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class AlbumViewModel(private val repository: AlbumRepository) : ViewModel() {
-    private val _message = MutableStateFlow("")
-    val message = _message.asStateFlow()
 
-    fun addAlbum(album: Album) {
+    fun addAlbum(album: Album, onSuccess: () -> Unit, onError: (String) -> Unit) {
         repository.addAbum(album,
-            onSuccess = {
-                _message.value = "Álbum creado exitosamente"
-            },
-            onError = { error ->
-                _message.value = error
-            }
+            onSuccess = onSuccess,
+            onError = onError
         )
     }
 }
