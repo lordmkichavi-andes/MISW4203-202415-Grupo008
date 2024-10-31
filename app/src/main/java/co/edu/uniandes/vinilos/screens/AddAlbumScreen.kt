@@ -58,6 +58,7 @@ import co.edu.uniandes.vinilos.model.models.Album
 import co.edu.uniandes.vinilos.model.providers.AlbumProviderAPI
 import co.edu.uniandes.vinilos.model.repository.AlbumRepository
 import co.edu.uniandes.vinilos.ui.components.MainScreenWithBottomBar
+import co.edu.uniandes.vinilos.ui.theme.ErrorRed
 import co.edu.uniandes.vinilos.viewmodel.AlbumViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -66,7 +67,10 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun AddAlbumnScreen(navController: NavController, viewModel: AlbumViewModel = AlbumViewModel(AlbumRepository(AlbumProviderAPI(LocalContext.current)))) {
+fun AddAlbumnScreen(
+    navController: NavController,
+    viewModel: AlbumViewModel =
+        AlbumViewModel(AlbumRepository(AlbumProviderAPI(LocalContext.current)))) {
 
     val scrollState = rememberScrollState()
 
@@ -89,8 +93,8 @@ fun AddAlbumnScreen(navController: NavController, viewModel: AlbumViewModel = Al
     isFormValid = true
 
     val textFieldColors  = TextFieldDefaults.colors(
-        errorIndicatorColor = Color.hsl(4F, 0.61F, 0.27F),
-        errorTextColor= Color.hsl(4F, 0.61F, 0.27F),
+        errorIndicatorColor = ErrorRed,
+        errorTextColor= ErrorRed,
         unfocusedContainerColor = Color.Transparent,
         focusedContainerColor = Color.Transparent,
         errorContainerColor = Color.Transparent
@@ -122,7 +126,8 @@ fun AddAlbumnScreen(navController: NavController, viewModel: AlbumViewModel = Al
             navController.navigate(route)
         },
         showBackIcon = true,
-        backDestination = "get_albumes"
+        backDestination = "get_albumes/Coleccionista",
+        profile = "Coleccionista"
     ) {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
@@ -168,7 +173,7 @@ fun AddAlbumnScreen(navController: NavController, viewModel: AlbumViewModel = Al
                             if(hasNameFieldError){
                                 Icon(
                                     imageVector = Icons.Filled.Error,
-                                    tint = Color.hsl(4F, 0.61F, 0.27F),
+                                    tint = ErrorRed,
                                     contentDescription = "Select date"
                                 )
                             }
@@ -197,7 +202,7 @@ fun AddAlbumnScreen(navController: NavController, viewModel: AlbumViewModel = Al
                             if(hasCoverFieldError){
                                 Icon(
                                     imageVector = Icons.Filled.Error,
-                                    tint = Color.hsl(4F, 0.61F, 0.27F),
+                                    tint = ErrorRed,
                                     contentDescription = "Select date"
                                 )
                             }
@@ -238,45 +243,27 @@ fun AddAlbumnScreen(navController: NavController, viewModel: AlbumViewModel = Al
                         ),
                         colors = textFieldColors
                     )
-                    OutlinedTextField(
-                        value = genre ,
-                        onValueChange = {
-                            genre  = it
-                            hasGenreFieldError = !validateField(genre)
-                            isFormValid = isFormValid()
-                        },
-                        label = { Text("Género") },
-                        isError = hasGenreFieldError,
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = textFieldColors
-                    )
-
-                    OutlinedTextField(
-                        value = recordLabel  ,
-                        onValueChange = {
-                            recordLabel   = it
-                            hasRecordLabelFieldError = !validateField(recordLabel)
-                            isFormValid = isFormValid()
-                        },
-                        label = { Text("Sello discográfico") },
-                        isError = hasRecordLabelFieldError,
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = textFieldColors,
-                        trailingIcon = {
-                            if(hasRecordLabelFieldError){
-                                Icon(
-                                    imageVector = Icons.Filled.Error,
-                                    tint = Color.hsl(4F, 0.61F, 0.27F),
-                                    contentDescription = "Select date"
-                                )
+                    CustomDropDown(
+                        text = "Género",
+                        options = genreOptions,
+                        onSelected = {
+                                value ->
+                            if (value != null) {
+                                genre = value
                             }
                         }
                     )
-                    if (hasRecordLabelFieldError) {
-                        ErrorTextInfo(
-                            text = "El sello discográfico es obligatorio."
-                        )
-                    }
+
+                    CustomDropDown(
+                        text = "Sello discográfico",
+                        options = recordOptions,
+                        onSelected = {
+                                value ->
+                            if (value != null) {
+                                recordLabel = value
+                            }
+                        }
+                    )
                     if(!isFormValid) {
                         ErrorBackgroundText("Todos los campos son obligatorios")
                     }
@@ -326,8 +313,8 @@ fun DatePickerDocked(
     } ?: ""
 
     val textFieldColors  = TextFieldDefaults.colors(
-        errorIndicatorColor = Color.hsl(4F, 0.61F, 0.27F),
-        errorTextColor= Color.hsl(4F, 0.61F, 0.27F),
+        errorIndicatorColor = ErrorRed,
+        errorTextColor= ErrorRed,
         unfocusedContainerColor = Color.Transparent,
         focusedContainerColor = Color.Transparent,
         errorContainerColor = Color.Transparent
@@ -388,7 +375,7 @@ fun DatePickerDocked(
 fun ErrorTextInfo(text: String) {
     Text(
         text = text,
-        color = Color.hsl(4F, 0.61F, 0.27F),
+        color = ErrorRed,
         modifier = Modifier.padding(start = 12.dp)
     )
 }
@@ -400,7 +387,7 @@ fun ErrorBackgroundText(text: String) {
             .fillMaxWidth()
             .size(140.dp)
             .padding(horizontal = 16.dp)
-            .background(Color.hsl(4F, 0.61F, 0.27F),
+            .background(ErrorRed,
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(25.dp),
