@@ -14,12 +14,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import co.edu.uniandes.vinilos.R
 import co.edu.uniandes.vinilos.viewmodel.MainSelectionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainSelectionScreen(viewModel: MainSelectionViewModel = viewModel()) {
+fun MainSelectionScreen(navController: NavController, viewModel: MainSelectionViewModel = viewModel()) {
 
     val selectedProfile by viewModel.selectedProfile.collectAsState()
 
@@ -76,7 +77,8 @@ fun MainSelectionScreen(viewModel: MainSelectionViewModel = viewModel()) {
 
                 Button(
                     onClick = {
-                        viewModel.selectProfile("Usuario")
+                        navController.navigate("get_albumes/Usuario")
+
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -93,7 +95,8 @@ fun MainSelectionScreen(viewModel: MainSelectionViewModel = viewModel()) {
 
                 OutlinedButton(
                     onClick = {
-                        viewModel.selectProfile("Coleccionista")
+
+                        navController.navigate("get_albumes/Coleccionista")
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -109,11 +112,7 @@ fun MainSelectionScreen(viewModel: MainSelectionViewModel = viewModel()) {
 
                 Spacer(modifier = Modifier.height(32.dp))
                 selectedProfile?.let {
-                    Text(
-                        text = "Perfil seleccionado: $it",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium
-                    )
+
                 }
             }
         }
