@@ -23,6 +23,7 @@ fun MainScreenWithBottomBar(
     onOptionSelected: (String) -> Unit,
     showBackIcon: Boolean = false,
     backDestination: String,
+    profile: String,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     var title by remember { mutableStateOf(initialTitle) }
@@ -64,7 +65,7 @@ fun MainScreenWithBottomBar(
                                     title = "Catálogo de álbumes"
                                     selectedOption = "Catálogo de álbumes"
                                     expanded = false
-                                    onOptionSelected("get_albumes")
+                                    onOptionSelected("get_albumes/$profile")
                                 }
                             )
                             DropdownMenuItem(
@@ -118,7 +119,7 @@ fun MainScreenWithBottomBar(
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(
                     onClick = {
-                        navController.navigate("get_albumes")
+                        navController.navigate("get_albumes/$profile")
                     }
                 ) {
                     Icon(

@@ -77,8 +77,8 @@ fun MainSelectionScreen(navController: NavController, viewModel: MainSelectionVi
 
                 Button(
                     onClick = {
-                        viewModel.selectProfile("Usuario")
-                        navController.navigate("get_albumes")
+                        navController.navigate("get_albumes/Usuario")
+
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -95,8 +95,8 @@ fun MainSelectionScreen(navController: NavController, viewModel: MainSelectionVi
 
                 OutlinedButton(
                     onClick = {
-                        viewModel.selectProfile("Coleccionista")
-                        navController.navigate("add_album")
+
+                        navController.navigate("get_albumes/Coleccionista")
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -112,11 +112,7 @@ fun MainSelectionScreen(navController: NavController, viewModel: MainSelectionVi
 
                 Spacer(modifier = Modifier.height(32.dp))
                 selectedProfile?.let {
-                    Text(
-                        text = "Perfil seleccionado: $it",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium
-                    )
+
                 }
             }
         }

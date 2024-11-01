@@ -1,5 +1,6 @@
 package co.edu.uniandes.vinilos.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,11 +25,14 @@ import coil.request.ImageRequest
 import androidx.compose.foundation.lazy.items
 import co.edu.uniandes.vinilos.ui.components.MainScreenWithBottomBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AdUnits
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.ui.draw.clip
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GetAlbumesScreen(navController: NavController, viewModel: AlbumViewModel = AlbumViewModel(AlbumRepository(AlbumProviderAPI(LocalContext.current)))) {
+fun GetAlbumesScreen(navController: NavController, profile:String, viewModel: AlbumViewModel = AlbumViewModel(AlbumRepository(AlbumProviderAPI(LocalContext.current)))) {
     viewModel.loadAlbums()
     val albums by viewModel.albums.collectAsState(initial = emptyList())
     val isLoading by viewModel.isLoading.collectAsState()
@@ -40,7 +44,8 @@ fun GetAlbumesScreen(navController: NavController, viewModel: AlbumViewModel = A
             navController.navigate(route)
         },
         showBackIcon = false,
-        backDestination = ""
+        backDestination = "",
+        profile = profile
     ) { paddingValues ->
         if (isLoading) {
             Box(
@@ -78,16 +83,60 @@ fun GetAlbumesScreen(navController: NavController, viewModel: AlbumViewModel = A
                         Text(text = "¡Ups! No se encontraron álbumes...")
                     }
                 }
+                if (profile == "Coleccionista") {
+                    AddAlbumButton(navController)
+                }
+
             } else {
-                // Muestra la lista de álbumes cuando no está vacía
-                AlbumList(
-                    albums = albums,
+                Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues)
-                )
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.TopStart
+                ) {
+                    if (profile == "Coleccionista") {
+                        AddAlbumButton(navController)
+                    }
+                    // Muestra la lista de álbumes cuando no está vacía
+                    AlbumList(
+                        albums = albums,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues)
+                    )
+                }
             }
         }
+    }
+    }
+
+@Composable
+private fun AddAlbumButton(navController: NavController) {
+    Button(
+        onClick = { navController.navigate("add_album") },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent,
+            contentColor = Color.Transparent
+        ),
+        modifier = Modifier.padding(8.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(40.dp) // Define el tamaño del cuadrado
+                .background(Color.White, shape = RoundedCornerShape(4.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add, // Cambia el ícono si es necesario
+                contentDescription = "Agregar",
+                tint = Color.Black
+            )
+        }
+        Spacer(modifier = Modifier.width(8.dp)) // Espacio entre el icono y el texto
+        Text(
+            text = "Agregar álbum",
+            color = Color.Black
+        )
     }
 }
 

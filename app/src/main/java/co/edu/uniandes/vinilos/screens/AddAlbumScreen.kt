@@ -1,6 +1,7 @@
 package co.edu.uniandes.vinilos.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,12 +16,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -53,6 +58,7 @@ import co.edu.uniandes.vinilos.model.models.Album
 import co.edu.uniandes.vinilos.model.providers.AlbumProviderAPI
 import co.edu.uniandes.vinilos.model.repository.AlbumRepository
 import co.edu.uniandes.vinilos.ui.components.MainScreenWithBottomBar
+import co.edu.uniandes.vinilos.ui.theme.ErrorRed
 import co.edu.uniandes.vinilos.viewmodel.AlbumViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -61,7 +67,10 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun AddAlbumnScreen(navController: NavController, viewModel: AlbumViewModel = AlbumViewModel(AlbumRepository(AlbumProviderAPI(LocalContext.current)))) {
+fun AddAlbumnScreen(
+    navController: NavController,
+    viewModel: AlbumViewModel =
+        AlbumViewModel(AlbumRepository(AlbumProviderAPI(LocalContext.current)))) {
 
     val scrollState = rememberScrollState()
 
@@ -72,19 +81,20 @@ fun AddAlbumnScreen(navController: NavController, viewModel: AlbumViewModel = Al
     var genre   by remember { mutableStateOf("") }
     var recordLabel  by remember { mutableStateOf("") }
 
+    val genreOptions = listOf("Classical", "Salsa", "Rock", "Folk")
+    val recordOptions = listOf("Sony Music", "EMI", "Discos Fuentes", "Elektra", "Fania Records")
+
     var hasNameFieldError by remember { mutableStateOf(false) }
     var hasCoverFieldError by remember { mutableStateOf(false) }
     var hasReleaseDateFieldError by remember { mutableStateOf(false) }
     var hasDescriptionFieldError by remember { mutableStateOf(false) }
-    var hasGenreFieldError by remember { mutableStateOf(false) }
-    var hasRecordLabelFieldError  by remember { mutableStateOf(false) }
     var isFormValid  by remember { mutableStateOf(false) }
 
     isFormValid = true
 
     val textFieldColors  = TextFieldDefaults.colors(
-        errorIndicatorColor = Color.hsl(4F, 0.61F, 0.27F),
-        errorTextColor= Color.hsl(4F, 0.61F, 0.27F),
+        errorIndicatorColor = ErrorRed,
+        errorTextColor= ErrorRed,
         unfocusedContainerColor = Color.Transparent,
         focusedContainerColor = Color.Transparent,
         errorContainerColor = Color.Transparent
@@ -116,7 +126,8 @@ fun AddAlbumnScreen(navController: NavController, viewModel: AlbumViewModel = Al
             navController.navigate(route)
         },
         showBackIcon = true,
-        backDestination = "get_albumes"
+        backDestination = "get_albumes/Coleccionista",
+        profile = "Coleccionista"
     ) {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
@@ -162,7 +173,7 @@ fun AddAlbumnScreen(navController: NavController, viewModel: AlbumViewModel = Al
                             if(hasNameFieldError){
                                 Icon(
                                     imageVector = Icons.Filled.Error,
-                                    tint = Color.hsl(4F, 0.61F, 0.27F),
+                                    tint = ErrorRed,
                                     contentDescription = "Select date"
                                 )
                             }
@@ -191,7 +202,7 @@ fun AddAlbumnScreen(navController: NavController, viewModel: AlbumViewModel = Al
                             if(hasCoverFieldError){
                                 Icon(
                                     imageVector = Icons.Filled.Error,
-                                    tint = Color.hsl(4F, 0.61F, 0.27F),
+                                    tint = ErrorRed,
                                     contentDescription = "Select date"
                                 )
                             }
@@ -232,45 +243,27 @@ fun AddAlbumnScreen(navController: NavController, viewModel: AlbumViewModel = Al
                         ),
                         colors = textFieldColors
                     )
-                    OutlinedTextField(
-                        value = genre ,
-                        onValueChange = {
-                            genre  = it
-                            hasGenreFieldError = !validateField(genre)
-                            isFormValid = isFormValid()
-                        },
-                        label = { Text("Género") },
-                        isError = hasGenreFieldError,
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = textFieldColors
-                    )
-
-                    OutlinedTextField(
-                        value = recordLabel  ,
-                        onValueChange = {
-                            recordLabel   = it
-                            hasRecordLabelFieldError = !validateField(recordLabel)
-                            isFormValid = isFormValid()
-                        },
-                        label = { Text("Sello discográfico") },
-                        isError = hasRecordLabelFieldError,
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = textFieldColors,
-                        trailingIcon = {
-                            if(hasRecordLabelFieldError){
-                                Icon(
-                                    imageVector = Icons.Filled.Error,
-                                    tint = Color.hsl(4F, 0.61F, 0.27F),
-                                    contentDescription = "Select date"
-                                )
+                    CustomDropDown(
+                        text = "Género",
+                        options = genreOptions,
+                        onSelected = {
+                                value ->
+                            if (value != null) {
+                                genre = value
                             }
                         }
                     )
-                    if (hasRecordLabelFieldError) {
-                        ErrorTextInfo(
-                            text = "El sello discográfico es obligatorio."
-                        )
-                    }
+
+                    CustomDropDown(
+                        text = "Sello discográfico",
+                        options = recordOptions,
+                        onSelected = {
+                                value ->
+                            if (value != null) {
+                                recordLabel = value
+                            }
+                        }
+                    )
                     if(!isFormValid) {
                         ErrorBackgroundText("Todos los campos son obligatorios")
                     }
@@ -320,8 +313,8 @@ fun DatePickerDocked(
     } ?: ""
 
     val textFieldColors  = TextFieldDefaults.colors(
-        errorIndicatorColor = Color.hsl(4F, 0.61F, 0.27F),
-        errorTextColor= Color.hsl(4F, 0.61F, 0.27F),
+        errorIndicatorColor = ErrorRed,
+        errorTextColor= ErrorRed,
         unfocusedContainerColor = Color.Transparent,
         focusedContainerColor = Color.Transparent,
         errorContainerColor = Color.Transparent
@@ -382,7 +375,7 @@ fun DatePickerDocked(
 fun ErrorTextInfo(text: String) {
     Text(
         text = text,
-        color = Color.hsl(4F, 0.61F, 0.27F),
+        color = ErrorRed,
         modifier = Modifier.padding(start = 12.dp)
     )
 }
@@ -394,7 +387,7 @@ fun ErrorBackgroundText(text: String) {
             .fillMaxWidth()
             .size(140.dp)
             .padding(horizontal = 16.dp)
-            .background(Color.hsl(4F, 0.61F, 0.27F),
+            .background(ErrorRed,
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(25.dp),
@@ -411,6 +404,47 @@ fun ErrorBackgroundText(text: String) {
             color = Color.White
         )
 
+    }
+}
+
+@Composable
+fun CustomDropDown(
+    text: String,
+    options: List<String>,
+    onSelected: (String?) -> Unit
+){
+    var isMenuExpanded by remember { mutableStateOf(false) }
+    OutlinedTextField(
+        value = "",
+        onValueChange = {},
+        readOnly = true,
+        label = { Text(text) },
+        trailingIcon = {
+            Icon(
+                imageVector = if (isMenuExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                contentDescription = "Desplegar menú",
+                modifier = Modifier.clickable { isMenuExpanded = !isMenuExpanded }
+            )
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { isMenuExpanded = !isMenuExpanded } // Abre el menú al hacer clic
+    )
+
+    // Menú desplegable
+    DropdownMenu(
+        expanded = isMenuExpanded,
+        onDismissRequest = { isMenuExpanded = false }
+    ) {
+        options.forEach { option ->
+            DropdownMenuItem(
+                text = { Text(option) },
+                onClick = {
+                    onSelected(option)
+                    isMenuExpanded = false // Cierra el menú
+                }
+            )
+        }
     }
 }
 fun convertMillisToDate(millis: Long): String {

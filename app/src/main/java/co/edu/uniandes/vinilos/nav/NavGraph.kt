@@ -17,8 +17,11 @@ fun NavGraph(navController: NavHostController) {
         composable("add_album") {
             AddAlbumnScreen(navController)
         }
-        composable("get_albumes") {
-            GetAlbumesScreen(navController)
+        composable("get_albumes/{profile}") { backStackEntry ->
+            val profile = backStackEntry.arguments?.getString("profile")
+            if (profile != null) {
+                GetAlbumesScreen(navController, profile = profile)
+            }
         }
     }
 }

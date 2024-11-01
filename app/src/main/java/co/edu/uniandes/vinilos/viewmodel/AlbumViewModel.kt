@@ -58,4 +58,11 @@ class AlbumViewModel(private val repository: AlbumRepository) : ViewModel() {
         super.onCleared()
         viewModelJob.cancel()
     }
+
+    fun addAlbum(album: Album, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        repository.addAbum(album,
+            onSuccess = onSuccess,
+            onError = onError
+        )
+    }
 }
