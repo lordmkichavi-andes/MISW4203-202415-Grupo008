@@ -48,6 +48,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -76,13 +77,12 @@ fun AddAlbumnScreen(
 
     var name by remember { mutableStateOf("") }
     var cover  by remember { mutableStateOf("") }
-    var releaseDate  by remember { mutableStateOf("") }
+    var releaseDate by remember { mutableStateOf(SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())) }
     var description  by remember { mutableStateOf("") }
-    var genre   by remember { mutableStateOf("") }
-    var recordLabel  by remember { mutableStateOf("") }
-
     val genreOptions = listOf("Classical", "Salsa", "Rock", "Folk")
+    var genre by remember { mutableStateOf(genreOptions.firstOrNull() ?: "") }
     val recordOptions = listOf("Sony Music", "EMI", "Discos Fuentes", "Elektra", "Fania Records")
+    var recordLabel by remember { mutableStateOf(recordOptions.firstOrNull() ?: "") }
 
     var hasNameFieldError by remember { mutableStateOf(false) }
     var hasCoverFieldError by remember { mutableStateOf(false) }
@@ -167,7 +167,9 @@ fun AddAlbumnScreen(
                         label = { Text("Nombre") },
                         placeholder = { Text("Ej: Pablo Perez") },
                         isError = hasNameFieldError,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("NombreField"),
                         colors = textFieldColors,
                         trailingIcon = {
                             if(hasNameFieldError){
@@ -196,7 +198,9 @@ fun AddAlbumnScreen(
                         label = { Text("Portada") },
                         placeholder = { Text("Ej: https://i.pinimg.com/image.jpg") },
                         isError =  hasCoverFieldError,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .testTag("PortadaField"),
                         colors = textFieldColors,
                         trailingIcon = {
                             if(hasCoverFieldError){
@@ -235,8 +239,8 @@ fun AddAlbumnScreen(
                         label = { Text("Descripción") },
                         isError =  hasDescriptionFieldError,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(150.dp), // Altura para permitir múltiples líneas
+                            .fillMaxSize()
+                            .testTag("DescripciónField"),
                         maxLines = 5, // Define el límite de líneas (o elimina para ilimitado)
                         keyboardOptions = KeyboardOptions.Default.copy(
                             imeAction = ImeAction.Default
@@ -251,7 +255,9 @@ fun AddAlbumnScreen(
                             if (value != null) {
                                 genre = value
                             }
-                        }
+                        },
+                        modifier = Modifier.testTag("GeneroField") ,
+                        selectedValue = genre
                     )
 
                     CustomDropDown(
@@ -262,7 +268,9 @@ fun AddAlbumnScreen(
                             if (value != null) {
                                 recordLabel = value
                             }
-                        }
+                        },
+                        modifier = Modifier.testTag("SelleDiscograficoField"),
+                        selectedValue = recordLabel
                     )
                     if(!isFormValid) {
                         ErrorBackgroundText("Todos los campos son obligatorios")
@@ -337,8 +345,8 @@ fun DatePickerDocked(
                 }
             },
             modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp),
+                .fillMaxSize()
+                .testTag("FechaField"),
             colors = textFieldColors
         )
 
@@ -411,11 +419,14 @@ fun ErrorBackgroundText(text: String) {
 fun CustomDropDown(
     text: String,
     options: List<String>,
-    onSelected: (String?) -> Unit
+    onSelected: (String?) -> Unit,
+    modifier: Modifier,
+    selectedValue: String
 ){
     var isMenuExpanded by remember { mutableStateOf(false) }
+    var currentSelection by remember { mutableStateOf(selectedValue) }
     OutlinedTextField(
-        value = "",
+        value = currentSelection,
         onValueChange = {},
         readOnly = true,
         label = { Text(text) },

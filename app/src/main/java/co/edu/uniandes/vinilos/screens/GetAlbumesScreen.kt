@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.AdUnits
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -118,7 +119,9 @@ private fun AddAlbumButton(navController: NavController) {
             containerColor = Color.Transparent,
             contentColor = Color.Transparent
         ),
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier
+            .padding(8.dp)
+            .testTag("AgregarAlbumButton")
     ) {
         Box(
             modifier = Modifier
