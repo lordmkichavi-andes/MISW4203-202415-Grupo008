@@ -126,7 +126,9 @@ private fun AddAlbumButton(navController: NavController) {
             containerColor = Color.Transparent,
             contentColor = Color.Transparent
         ),
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier
+            .padding(8.dp)
+            .testTag("AgregarAlbumButton")
     ) {
         Box(
             modifier = Modifier

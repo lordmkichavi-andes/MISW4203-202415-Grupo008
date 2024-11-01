@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
-
 android {
     namespace = "co.edu.uniandes.vinilos"
     compileSdk = 34
@@ -65,6 +64,10 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation("androidx.compose.material3:material3:<version>")
     implementation("androidx.compose.material:material-icons-extended:<version>")
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation.testing)
+    implementation(libs.androidx.junit.ktx)
+    implementation(libs.androidx.ui.test.junit4.android)
     implementation("io.coil-kt:coil-compose:2.2.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     testImplementation("junit:junit:4.13.2")
