@@ -27,6 +27,7 @@ import co.edu.uniandes.vinilos.ui.components.MainScreenWithBottomBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import co.edu.uniandes.vinilos.ui.theme.InformativeGreen
 

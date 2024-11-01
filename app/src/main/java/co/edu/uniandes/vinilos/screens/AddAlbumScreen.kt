@@ -258,9 +258,8 @@ fun AddAlbumnScreen(
                             }
                         },
                         modifier = Modifier.testTag("GeneroField") ,
-                        selectedValue = genre
-                            isFormValid = isFormValid()
-                        }
+                        selectedValue = genre,
+
                     )
 
                     CustomDropDown(
@@ -273,9 +272,8 @@ fun AddAlbumnScreen(
                             }
                         },
                         modifier = Modifier.testTag("SelleDiscograficoField"),
-                        selectedValue = recordLabel
-                            isFormValid = isFormValid()
-                        }
+                        selectedValue = recordLabel,
+
                     )
                     if(!isFormValid) {
                         ErrorBackgroundText("Todos los campos son obligatorios")
@@ -440,10 +438,9 @@ fun CustomDropDown(
     var currentSelection by remember { mutableStateOf(selectedValue) }
     OutlinedTextField(
         value = currentSelection,
-        onValueChange = {},
+        onValueChange = { selectedOption -> currentSelection = selectedOption },
         readOnly = true,
         label = { Text(text) },
-        readOnly = true,
         trailingIcon = {
             Icon(
                 imageVector = if (isMenuExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
@@ -465,7 +462,7 @@ fun CustomDropDown(
             DropdownMenuItem(
                 text = { Text(option) },
                 onClick = {
-                    selectedValue = option
+                    currentSelection = option
                     onSelected(option)
                     isMenuExpanded = false // Cierra el menú
                 }
