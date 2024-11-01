@@ -101,7 +101,7 @@ fun AddAlbumnScreen(
     )
 
     fun validateField(field: String): Boolean {
-        return name.isNotBlank() && name.length > 3
+        return field.isNotBlank() && field.length > 3
     }
     fun isDateValid(date: String, format: String = "dd/MM/yyyy"): Boolean {
         val dateFormat = SimpleDateFormat(format, Locale.getDefault())
@@ -216,6 +216,7 @@ fun AddAlbumnScreen(
 
                     DatePickerDocked(
                         onDateSelected = { selectedDate ->
+
                             val date = Date(selectedDate!!)
                             releaseDate = SimpleDateFormat("dd/MM/yyy", Locale.getDefault()).format(date)
                             hasReleaseDateFieldError = !isDateValid(releaseDate)
@@ -251,6 +252,7 @@ fun AddAlbumnScreen(
                             if (value != null) {
                                 genre = value
                             }
+                            isFormValid = isFormValid()
                         }
                     )
 
@@ -262,6 +264,7 @@ fun AddAlbumnScreen(
                             if (value != null) {
                                 recordLabel = value
                             }
+                            isFormValid = isFormValid()
                         }
                     )
                     if(!isFormValid) {
@@ -279,7 +282,7 @@ fun AddAlbumnScreen(
                                 genre = genre,
                                 recordLabel = recordLabel,
                             )
-                            viewModel.addAlbum(newAlbum)
+                            viewModel.addAlbum(newAlbum, navController)
                         },
                         enabled = isFormValid(),
                         modifier = Modifier
@@ -308,9 +311,7 @@ fun DatePickerDocked(
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
-    val selectedDate = datePickerState.selectedDateMillis?.let {
-        convertMillisToDate(it)
-    } ?: ""
+    var selectedDate by remember { mutableStateOf("") }
 
     val textFieldColors  = TextFieldDefaults.colors(
         errorIndicatorColor = ErrorRed,
@@ -325,9 +326,11 @@ fun DatePickerDocked(
     ) {
         OutlinedTextField(
             value = selectedDate,
-            onValueChange = { },
+            onValueChange = {
+                            },
             label = { Text("Fecha de lanzamiento") },
             placeholder = { Text("dd/mm/yyyy") },
+            readOnly = true,
             trailingIcon = {
                 IconButton(onClick = { showDatePicker = !showDatePicker }) {
                     Icon(
@@ -352,6 +355,9 @@ fun DatePickerDocked(
                                    },
                 confirmButton = {
                     TextButton(onClick = {
+                        selectedDate = datePickerState.selectedDateMillis?.let {
+                            convertMillisToDate(it)
+                        } ?: ""
                         onDateSelected(datePickerState.selectedDateMillis)
                         onDismiss()
                         showDatePicker = false
@@ -369,6 +375,11 @@ fun DatePickerDocked(
             }
         }
     }
+}
+
+fun convertMillisToDate(millis: Long): String {
+    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    return formatter.format(Date(millis))
 }
 
 @Composable
@@ -414,11 +425,12 @@ fun CustomDropDown(
     onSelected: (String?) -> Unit
 ){
     var isMenuExpanded by remember { mutableStateOf(false) }
+    var selectedValue by remember { mutableStateOf("") }
     OutlinedTextField(
-        value = "",
-        onValueChange = {},
-        readOnly = true,
+        value = selectedValue,
+        onValueChange = { selectedOption -> selectedValue = selectedOption },
         label = { Text(text) },
+        readOnly = true,
         trailingIcon = {
             Icon(
                 imageVector = if (isMenuExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
@@ -440,14 +452,11 @@ fun CustomDropDown(
             DropdownMenuItem(
                 text = { Text(option) },
                 onClick = {
+                    selectedValue = option
                     onSelected(option)
                     isMenuExpanded = false // Cierra el menú
                 }
             )
         }
     }
-}
-fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    return formatter.format(Date(millis))
 }

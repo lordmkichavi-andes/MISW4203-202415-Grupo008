@@ -25,14 +25,19 @@ import coil.request.ImageRequest
 import androidx.compose.foundation.lazy.items
 import co.edu.uniandes.vinilos.ui.components.MainScreenWithBottomBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AdUnits
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Error
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
+import co.edu.uniandes.vinilos.ui.theme.InformativeGreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GetAlbumesScreen(navController: NavController, profile:String, viewModel: AlbumViewModel = AlbumViewModel(AlbumRepository(AlbumProviderAPI(LocalContext.current)))) {
+fun GetAlbumesScreen(
+    navController: NavController,
+    profile:String,
+    recentlyAddedAlbum: Boolean? = false ,
+    viewModel: AlbumViewModel = AlbumViewModel(AlbumRepository(AlbumProviderAPI(LocalContext.current))))
+{
     viewModel.loadAlbums()
     val albums by viewModel.albums.collectAsState(initial = emptyList())
     val isLoading by viewModel.isLoading.collectAsState()
@@ -50,8 +55,7 @@ fun GetAlbumesScreen(navController: NavController, profile:String, viewModel: Al
         if (isLoading) {
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
+                    .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Column(
@@ -88,21 +92,25 @@ fun GetAlbumesScreen(navController: NavController, profile:String, viewModel: Al
                 }
 
             } else {
-                Box(
+                Column (
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues),
-                    contentAlignment = Alignment.TopStart
+                    horizontalAlignment = Alignment.Start
                 ) {
                     if (profile == "Coleccionista") {
                         AddAlbumButton(navController)
                     }
+                    if (recentlyAddedAlbum == true) {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        InformationBackgroundText(text = "Album agregado correctamente")
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
                     // Muestra la lista de álbumes cuando no está vacía
                     AlbumList(
                         albums = albums,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(paddingValues)
                     )
                 }
             }
@@ -145,7 +153,7 @@ fun AlbumList(albums: List<Album>, modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
     ) {
         items(albums) { album ->
             AlbumCard(album = album)
@@ -201,5 +209,32 @@ fun AlbumCard(album: Album) {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun InformationBackgroundText(text: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .size(140.dp)
+            .padding(horizontal = 16.dp)
+            .background(
+                InformativeGreen,
+                shape = RoundedCornerShape(16.dp)
+            ),
+        contentAlignment = Alignment.Center
+
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.headlineLarge.copy(
+                fontWeight = FontWeight.Bold
+            ),
+            textAlign = TextAlign.Center,
+            fontSize = 32.sp,
+            color = Color.White
+        )
+
     }
 }

@@ -10,12 +10,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 
 class AlbumViewModel(private val repository: AlbumRepository) : ViewModel() {
     private val _message = MutableStateFlow("")
     val message = _message.asStateFlow()
     private val _albums = MutableStateFlow<List<Album>>(emptyList())
     val albums = _albums.asStateFlow()
+
+    private val _recentAddedAlbum = MutableStateFlow(false)
+    val recentAddedAlbum = _recentAddedAlbum.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
@@ -24,10 +28,12 @@ class AlbumViewModel(private val repository: AlbumRepository) : ViewModel() {
     private val viewModelJob = Job()
     private val customScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    fun addAlbum(album: Album) {
+    fun addAlbum(album: Album, navController: NavController) {
         repository.addAbum(album,
             onSuccess = {
                 _message.value = "Álbum creado exitosamente"
+                _recentAddedAlbum.value = true
+                navController.navigate("get_albumes/Coleccionista/1")
             },
             onError = { error ->
                 _message.value = error
@@ -36,6 +42,7 @@ class AlbumViewModel(private val repository: AlbumRepository) : ViewModel() {
     }
 
     fun loadAlbums() {
+        println("recentAlbums: ${_recentAddedAlbum.value}")
         _isLoading.value = true
         viewModelScope.launch { // Cambia customScope a viewModelScope
             repository.getAlbums(
@@ -59,10 +66,4 @@ class AlbumViewModel(private val repository: AlbumRepository) : ViewModel() {
         viewModelJob.cancel()
     }
 
-    fun addAlbum(album: Album, onSuccess: () -> Unit, onError: (String) -> Unit) {
-        repository.addAbum(album,
-            onSuccess = onSuccess,
-            onError = onError
-        )
-    }
 }

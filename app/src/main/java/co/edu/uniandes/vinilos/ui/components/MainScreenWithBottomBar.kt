@@ -65,7 +65,7 @@ fun MainScreenWithBottomBar(
                                     title = "Catálogo de álbumes"
                                     selectedOption = "Catálogo de álbumes"
                                     expanded = false
-                                    onOptionSelected("get_albumes/$profile")
+                                    onOptionSelected("get_albumes/$profile/0")
                                 }
                             )
                             DropdownMenuItem(
@@ -119,7 +119,7 @@ fun MainScreenWithBottomBar(
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(
                     onClick = {
-                        navController.navigate("get_albumes/$profile")
+                        navController.navigate("get_albumes/$profile/0")
                     }
                 ) {
                     Icon(
