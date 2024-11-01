@@ -77,7 +77,7 @@ fun MainSelectionScreen(navController: NavController, viewModel: MainSelectionVi
 
                 Button(
                     onClick = {
-                        navController.navigate("get_albumes/Usuario")
+                        navController.navigate("get_albumes/Usuario/0")
 
                     },
                     modifier = Modifier
@@ -96,7 +96,7 @@ fun MainSelectionScreen(navController: NavController, viewModel: MainSelectionVi
                 OutlinedButton(
                     onClick = {
 
-                        navController.navigate("get_albumes/Coleccionista")
+                        navController.navigate("get_albumes/Coleccionista/0")
                     },
                     modifier = Modifier
                         .fillMaxWidth()
