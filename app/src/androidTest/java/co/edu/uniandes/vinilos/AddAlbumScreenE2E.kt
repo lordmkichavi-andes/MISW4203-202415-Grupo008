@@ -10,7 +10,7 @@ import kotlin.system.measureTimeMillis
 
 @RunWith(AndroidJUnit4::class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-class SelectCollectorTest {
+class AddAlbumScreenE2E {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<MainActivity>()
