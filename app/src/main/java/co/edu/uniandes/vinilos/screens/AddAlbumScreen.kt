@@ -126,7 +126,7 @@ fun AddAlbumnScreen(
             navController.navigate(route)
         },
         showBackIcon = true,
-        backDestination = "get_albumes/Coleccionista",
+        backDestination =  "get_albumes/Coleccionista/0",
         profile = "Coleccionista"
     ) {
             Scaffold(
