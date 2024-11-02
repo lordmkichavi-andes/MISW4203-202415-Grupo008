@@ -145,12 +145,13 @@ fun AddAlbumnScreen(
                         .fillMaxSize()
                         .verticalScroll(scrollState)
                         .padding(paddingValues) // Aplica padding del Scaffold
-                        .padding(16.dp),
+                        .padding(horizontal = 16.dp)
+                    .padding(bottom =100.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = "Agregar un nuevo album",
+                        text = "Agregar un nuevo álbum",
                         style = MaterialTheme.typography.headlineLarge.copy(
                             fontWeight = FontWeight.Bold
                         ),
@@ -184,7 +185,7 @@ fun AddAlbumnScreen(
                     )
                     if (hasNameFieldError) {
                         ErrorTextInfo(
-                            text = "El nombre del albúm es obligatorio"
+                            text = "El nombre del álbum es obligatorio"
                         )
                     }
 
@@ -262,6 +263,7 @@ fun AddAlbumnScreen(
 
                     )
 
+
                     CustomDropDown(
                         text = "Sello discográfico",
                         options = recordOptions,
@@ -280,6 +282,7 @@ fun AddAlbumnScreen(
                     }
 
                     // Botón para agregar el nuevo elemento a la lista
+
                     Button(
                         onClick = {
                             val newAlbum = Album(
@@ -303,7 +306,6 @@ fun AddAlbumnScreen(
                     ) {
                         Text(text = "Agregar", fontSize = 18.sp)
                     }
-
 
                 }
             }
@@ -419,7 +421,7 @@ fun ErrorBackgroundText(text: String) {
                 fontWeight = FontWeight.Bold
             ),
             textAlign = TextAlign.Center,
-            fontSize = 32.sp,
+            fontSize = 24.sp,
             color = Color.White
         )
 
