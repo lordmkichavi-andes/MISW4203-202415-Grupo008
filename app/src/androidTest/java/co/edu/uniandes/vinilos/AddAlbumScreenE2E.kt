@@ -1,26 +1,22 @@
 package co.edu.uniandes.vinilos
 
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onAllNodesWithTag
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
+import org.junit.runners.MethodSorters
+import kotlin.system.measureTimeMillis
 
 @RunWith(AndroidJUnit4::class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class SelectCollectorTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
-    @Test
-    fun testSelectCollectorProfile() {
+    @Before
+    fun setUp() {
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule.onAllNodes(hasText("Selecciona tu tipo de usuario para comenzar:")).fetchSemanticsNodes().isNotEmpty()
         }
@@ -33,21 +29,43 @@ class SelectCollectorTest {
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule.onAllNodesWithTag("AgregarAlbumButton").fetchSemanticsNodes().isNotEmpty()
         }
+    }
 
-        composeTestRule.onNodeWithTag("AgregarAlbumButton")
-            .assertIsDisplayed()
-            .performClick()
+    @After
+    fun tearDown() {
+        composeTestRule.activity.finish()
+    }
 
-        composeTestRule.onNodeWithTag("NombreField").performTextInput("Álbum de prueba")
+    @Test
+    fun testA_SelectCollectorProfile() {
+        val timeTaken = measureTimeMillis {
+            composeTestRule.onNodeWithTag("AgregarAlbumButton")
+                .assertIsDisplayed()
+                .performClick()
 
-        composeTestRule.onNodeWithTag("PortadaField").performTextInput("https://example.com/image.jpg")
+            composeTestRule.onNodeWithTag("NombreField").performTextInput("Álbum de prueba")
+            composeTestRule.onNodeWithTag("PortadaField").performTextInput("https://example.com/image.jpg")
+            composeTestRule.onNodeWithTag("FechaField").performClick()
+            composeTestRule.onNodeWithTag("DescripciónField").performTextInput("Descripción de prueba del álbum")
 
-        composeTestRule.onNodeWithTag("FechaField").performClick()
+            composeTestRule.onNodeWithText("Agregar")
+                .assertIsDisplayed()
+                .performClick()
+        }
+        println("Tiempo para testA_SelectCollectorProfile: $timeTaken ms")
+    }
 
-        composeTestRule.onNodeWithTag("DescripciónField").performTextInput("Descripción de prueba del álbum")
+    @Test
+    fun testB_AlbumIsNotAddedWhenFieldsAreIncomplete() {
+        val timeTaken = measureTimeMillis {
+            composeTestRule.onNodeWithTag("AgregarAlbumButton").performClick()
 
-        composeTestRule.onNodeWithText("Agregar")
-            .assertIsDisplayed()
-            .performClick()
+            composeTestRule.onNodeWithTag("PortadaField").performTextInput("https://example.com/image.jpg")
+            composeTestRule.onNodeWithTag("FechaField").performClick()
+            composeTestRule.onNodeWithTag("DescripciónField").performTextInput("Descripción de prueba del álbum")
+
+            composeTestRule.onNodeWithText("Agregar").assertIsNotEnabled()
+        }
+        println("Tiempo para testB_AlbumIsNotAddedWhenFieldsAreIncomplete: $timeTaken ms")
     }
 }
