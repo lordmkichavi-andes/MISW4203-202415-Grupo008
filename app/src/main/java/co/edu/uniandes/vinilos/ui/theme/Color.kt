@@ -11,3 +11,4 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val ErrorRed = Color.hsl(4F, 0.61F, 0.27F)
+val InformativeGreen = Color.hsl(111F, 0.68F, 0.29F)
