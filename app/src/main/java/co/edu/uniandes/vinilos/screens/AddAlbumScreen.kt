@@ -76,9 +76,9 @@ fun AddAlbumnScreen(
     val scrollState = rememberScrollState()
 
     var name by remember { mutableStateOf("") }
-    var cover  by remember { mutableStateOf("") }
-    var releaseDate by remember { mutableStateOf(SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())) }
-    var description  by remember { mutableStateOf("") }
+    var cover by remember { mutableStateOf("") }
+    var releaseDate by remember { mutableStateOf("") } 
+    var description by remember { mutableStateOf("") }
     val genreOptions = listOf("Classical", "Salsa", "Rock", "Folk")
     var genre by remember { mutableStateOf(genreOptions.firstOrNull() ?: "") }
     val recordOptions = listOf("Sony Music", "EMI", "Discos Fuentes", "Elektra", "Fania Records")
@@ -90,9 +90,7 @@ fun AddAlbumnScreen(
     var hasDescriptionFieldError by remember { mutableStateOf(false) }
     var isFormValid  by remember { mutableStateOf(false) }
 
-    isFormValid = true
-
-    val textFieldColors  = TextFieldDefaults.colors(
+    val textFieldColors = TextFieldDefaults.colors(
         errorIndicatorColor = ErrorRed,
         errorTextColor= ErrorRed,
         unfocusedContainerColor = Color.Transparent,
@@ -103,14 +101,15 @@ fun AddAlbumnScreen(
     fun validateField(field: String): Boolean {
         return field.isNotBlank() && field.length > 3
     }
-    fun isDateValid(date: String, format: String = "dd/MM/yyyy"): Boolean {
+
+    fun isDateValid(date: String, format: String = "yyyy-MM-dd"): Boolean {
         val dateFormat = SimpleDateFormat(format, Locale.getDefault())
-        dateFormat.isLenient = false // Para estricta coincidencia con el formato
+        dateFormat.isLenient = false
 
         return try {
-            dateFormat.parse(date) != null // Si parsea sin errores, la fecha es válida
+            dateFormat.parse(date) != null
         } catch (e: Exception) {
-            false // Si hay un error, significa que el formato no es válido
+            false
         }
     }
 
@@ -219,17 +218,14 @@ fun AddAlbumnScreen(
                         )
                     }
 
-                    DatePickerDocked(
-                        onDateSelected = { selectedDate ->
-
-                            val date = Date(selectedDate!!)
-                            releaseDate = SimpleDateFormat("dd/MM/yyy", Locale.getDefault()).format(date)
-                            hasReleaseDateFieldError = !isDateValid(releaseDate)
-                            isFormValid = isFormValid()
-                        },
-                        onDismiss = {  }
-                    )
-
+                DatePickerDocked(
+                    onDateSelected = { selectedDate ->
+                        releaseDate = selectedDate // La fecha ya está en el formato yyyy-MM-dd
+                        hasReleaseDateFieldError = !isDateValid(releaseDate)
+                        isFormValid = isFormValid()
+                    },
+                    onDismiss = { /* Acción al cerrar el DatePicker sin seleccionar */ }
+                )
 
                     OutlinedTextField(
                         value = description,
@@ -316,7 +312,7 @@ fun AddAlbumnScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerDocked(
-    onDateSelected: (Long?) -> Unit,
+    onDateSelected: (String) -> Unit, 
     onDismiss: () -> Unit
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
@@ -342,7 +338,7 @@ fun DatePickerDocked(
             placeholder = { Text("dd/mm/yyyy") },
             readOnly = true,
             trailingIcon = {
-                IconButton(onClick = { showDatePicker = !showDatePicker }) {
+                IconButton(onClick = { showDatePicker = true }) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
                         contentDescription = "Select date"
@@ -365,11 +361,12 @@ fun DatePickerDocked(
                                    },
                 confirmButton = {
                     TextButton(onClick = {
-                        selectedDate = datePickerState.selectedDateMillis?.let {
-                            convertMillisToDate(it)
-                        } ?: ""
-                        onDateSelected(datePickerState.selectedDateMillis)
-                        onDismiss()
+                        val selectedMillis = datePickerState.selectedDateMillis
+                        if (selectedMillis != null) {
+                            val date = Date(selectedMillis)
+                            selectedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date) // Para mostrar
+                            onDateSelected(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)) // Para enviar
+                        }
                         showDatePicker = false
                     }) {
                         Text("OK")
@@ -388,7 +385,7 @@ fun DatePickerDocked(
 }
 
 fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     return formatter.format(Date(millis))
 }
 
