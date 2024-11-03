@@ -48,3 +48,86 @@ El proyecto está centrado en las siguientes historias de usuario:
 | **[HU06](https://github.com/lordmkichavi-andes/MISW4203-202415-GrupoXYZ/wiki/HU06-%E2%80%90-Consultar-la-informaci%C3%B3n-detallada-del-coleccionista)** | Agregar álbum a coleccionista | Sprint 3 |
 | **[HU07](https://github.com/lordmkichavi-andes/MISW4203-202415-GrupoXYZ/wiki/HU07-%E2%80%90-Crear-alb%C3%BAm)** | Consultar la información detallada de un artista | Sprint 3 |
 | **[HU08](https://github.com/lordmkichavi-andes/MISW4203-202415-GrupoXYZ/wiki/HU08-%E2%80%90-Asociar-tracks-con-un-%C3%A1lbum)** | Consultar el listado de artistas | Sprint 3 |
+
+---
+
+## 💻 **Instrucciones para Configuración Local**
+
+### 📋 Requisitos del Entorno
+
+Para compilar y ejecutar esta aplicación de manera local, asegúrate de tener instalado:
+
+- **🛠️ Android Studio**: versión recomendada 4.2 o superior.  
+  - **Versión usada**: 2024.1.2 (Koala Feature Drop)
+
+- **☕ Java Development Kit (JDK)**: versión 11 o superior.  
+  - **Versión usada**: 23.0.1
+
+- **⚙️ Gradle**: El proyecto incluye un archivo `gradle-wrapper`, por lo que no es necesario instalar Gradle manualmente.
+
+### 📝 Configuración Inicial
+
+1. **Clona el repositorio**:
+   - Abre la terminal y usa:
+     ```bash
+     git clone https://github.com/lordmkichavi-andes/MISW4203-202415-Grupo008.git
+     cd MISW4203-202415-Grupo008
+     ```
+
+2. **Abre el proyecto en Android Studio**:
+   - En **Android Studio**, selecciona **Open an existing project** y navega hasta el directorio del proyecto.
+
+3. **Sincroniza las dependencias**:
+   - Android Studio debería detectar automáticamente el archivo `build.gradle` y comenzar la sincronización.
+   - Si hay errores de sincronización, verifica la compatibilidad de Gradle con tu versión de Android Studio.
+
+### ▶️ Compilar y Ejecutar la Aplicación
+
+1. **Configura un dispositivo de prueba**:
+   - Usa un emulador de Android o un dispositivo físico conectado.
+
+2. **Ejecuta la aplicación**:
+   - En Android Studio, utiliza el botón de **Run** o presiona `Shift + F10` para compilar y desplegar la aplicación en tu dispositivo.
+
+---
+
+## 🔍 **Pruebas Automatizadas - Ejecución de Pruebas E2E**
+
+El proyecto incluye pruebas de extremo a extremo (E2E) para verificar las funcionalidades clave de la aplicación. Estas pruebas simulan la interacción del usuario en dos flujos principales.
+
+### 📂 Clases de Prueba
+
+#### 1️⃣ **AddAlbumScreenE2E**
+   - Valida la funcionalidad de la pantalla para agregar un álbum en el perfil "Coleccionista".
+   - **Métodos**:
+     - `testAddAlbumSuccessfullyAsCollector`: Verifica que un coleccionista puede agregar un álbum con todos los datos completos.
+     - `testAlbumAdditionFailsWithIncompleteFields`: Asegura que el botón "Agregar" esté deshabilitado si faltan datos.
+
+#### 2️⃣ **GetAlbumCatalogE2E**
+   - Evalúa la visualización del catálogo de álbumes para el perfil "Visitante".
+   - **Métodos**:
+     - `testAlbumCatalogIsDisplayedForVisitorProfile`: Verifica que el catálogo se muestra correctamente.
+     - `testAlbumLoadingMessageIsDisplayed`: Confirma que aparece un mensaje de carga mientras se obtienen los datos.
+
+### 🚀 Ejecución de Pruebas
+
+#### 🔹 Desde Android Studio:
+   - Abre el archivo de prueba (`AddAlbumScreenE2E.kt` o `GetAlbumCatalogE2ETest.kt`).
+   - Haz clic derecho en el método que deseas ejecutar y selecciona **Run 'NombreDeLaPrueba'**.
+
+#### 🔹 Desde la Terminal:
+   - Ejecuta todas las pruebas de una clase completa con los siguientes comandos:
+
+     - Para **AddAlbumScreenE2E**:
+       ```bash
+       ./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class="co.edu.uniandes.vinilos.AddAlbumScreenE2E"
+       ```
+
+     - Para **GetAlbumCatalogE2ETest**:
+       ```bash
+       ./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class="co.edu.uniandes.vinilos.GetAlbumCatalogE2ETest"
+       ```
+
+> **ℹ️ Nota**: Los resultados de cada prueba, incluyendo el tiempo de ejecución en milisegundos, aparecerán en la consola de Android Studio o en la terminal para facilitar el análisis de rendimiento.
+
+---
