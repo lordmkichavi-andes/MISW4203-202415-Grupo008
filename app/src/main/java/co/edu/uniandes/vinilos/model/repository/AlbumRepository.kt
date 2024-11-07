@@ -40,4 +40,25 @@ class AlbumRepository(val albumProvider: AlbumProvider) {
 
 
     }
+
+    fun getAlbum( context: Context, albumID: Int,  onSuccess: (Album) -> Unit, onError: (String) -> Unit) {
+        val cacheAlbum = CacheManager.getInstance(context).getAlbum(albumID)
+        if (cacheAlbum == null) {
+            Log.d("AlbumRepository", "Iniciando solicitud para obtener álbumes.")
+            albumProvider.getAlbum(
+                albumID,
+                { album ->
+                Log.d("AlbumRepository", "Álbum ${album.name} obtenido exitosament.")
+                onSuccess(album)
+            }, { error ->
+                Log.e("AlbumRepository", "Error al obtener álbum: $error")
+                onError(error)
+            })
+        } else {
+            Log.d("AlbumRepository", "Obteniendo album desde memoria caché.")
+            onSuccess(cacheAlbum)
+        }
+
+
+    }
 }
