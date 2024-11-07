@@ -1,5 +1,6 @@
 package co.edu.uniandes.vinilos.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,9 +21,11 @@ class AlbumViewModel(private val repository: AlbumRepository) : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
-    fun addAlbum(album: Album, navController: NavController) {
+    fun addAlbum(context: Context, album: Album, navController: NavController) {
         Log.d("AlbumViewModel", "Iniciando proceso de agregar álbum: ${album.name}")
-        repository.addAbum(album,
+        repository.addAbum(
+            context= context,
+            album,
             onSuccess = {
                 Log.d("AlbumViewModel", "Álbum agregado exitosamente: ${album.name}")
                 _message.value = "Álbum creado exitosamente"
@@ -36,11 +39,12 @@ class AlbumViewModel(private val repository: AlbumRepository) : ViewModel() {
         )
     }
 
-    fun loadAlbums() {
+    fun loadAlbums(context: Context,) {
         Log.d("AlbumViewModel", "Iniciando carga de álbumes.")
         _isLoading.value = true
         viewModelScope.launch {
             repository.getAlbums(
+                context= context,
                 onSuccess = { albumList ->
                     Log.d("AlbumViewModel", "Álbumes cargados con éxito: ${albumList.size} álbumes obtenidos.")
                     _albums.value = albumList

@@ -39,7 +39,8 @@ fun GetAlbumesScreen(
     recentlyAddedAlbum: Boolean? = false ,
     viewModel: AlbumViewModel = AlbumViewModel(AlbumRepository(AlbumProviderAPI(LocalContext.current))))
 {
-    viewModel.loadAlbums()
+    val context = LocalContext.current
+    viewModel.loadAlbums(context)
     val albums by viewModel.albums.collectAsState(initial = emptyList())
     val isLoading by viewModel.isLoading.collectAsState()
 
