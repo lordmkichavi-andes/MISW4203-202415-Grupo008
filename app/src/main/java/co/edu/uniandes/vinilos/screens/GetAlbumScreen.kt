@@ -41,6 +41,7 @@ import androidx.compose.material.icons.filled.Album
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material3.*
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 
@@ -95,18 +96,78 @@ fun GetAlbumScreen(
                 ) {
                     CircularProgressIndicator()
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = "Cargando tus álbumes de vinilos favoritos.")
+                    Text(text = "Cargando tu álbum de vinilos favorito.")
                 }
             }
-        } else {
+        } else if (album.name == "") {
 
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White)
+                    .verticalScroll(scrollState)
+                    .padding(top=50.dp, bottom = 50.dp)
+
+            ){
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .background(color = Color.LightGray)
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Column (
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .width(250.dp)
+                        .align(Alignment.CenterHorizontally)
+                ) {
+
+                    // Título
+                    Text(
+                        text = "¡Ups! No eres tú, somos nosotros...",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        text = "Ha ocurrido un problema al obtener tu album favorito",
+                        fontSize = 16.sp
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Button(
+                        onClick = {
+                            navController.navigate("get_album/$profile/$albumID")
+
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .clip(RoundedCornerShape(12.dp)),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text(text = "Intentar nuevamente", fontSize = 18.sp)
+                    }
+                }
+            }
+        }
+        else
             Column(
 
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp)
                     .background(Color.White)
                     .verticalScroll(scrollState)
+                    .padding(16.dp)
                     .padding(top=50.dp, bottom = 50.dp)
             ) { // Imagen
                 Box(
@@ -207,7 +268,7 @@ fun GetAlbumScreen(
 
         }
     }
-}
+
 
 
 @Composable
