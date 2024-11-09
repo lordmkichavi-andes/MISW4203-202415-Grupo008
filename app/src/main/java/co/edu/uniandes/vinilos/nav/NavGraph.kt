@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import co.edu.uniandes.vinilos.screens.AddAlbumnScreen
+import co.edu.uniandes.vinilos.screens.ArtistListScreen
 import co.edu.uniandes.vinilos.screens.GetAlbumesScreen
 
 @Composable
@@ -25,6 +26,9 @@ fun NavGraph(navController: NavHostController) {
             } else if (profile != null ){
                 GetAlbumesScreen(navController, profile = profile)
             }
+        }
+        composable("get_artistas") {
+            ArtistListScreen(navController = navController)
         }
     }
 }
