@@ -33,7 +33,6 @@ fun ArtistListScreen(navController: NavController) {
     val artistRepository = remember { ArtistRepository(ArtistProviderAPI(context)) }
     val viewModel = remember { ArtistViewModel(artistRepository) }
 
-    // Utilizamos collectAsStateWithLifecycle para mejorar la gestión del ciclo de vida.
     val artists by viewModel.artists.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
