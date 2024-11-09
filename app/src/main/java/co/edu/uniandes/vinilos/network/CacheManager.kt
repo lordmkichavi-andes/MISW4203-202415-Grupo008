@@ -33,6 +33,13 @@ class CacheManager(context: Context) {
         return ArrayList(albums.values)
     }
 
+    fun getAlbum(albumID: Int): Album? {
+        if (albums[albumID] != null){
+           return  albums[albumID]
+        }
+        return null
+    }
+
 
 }
 

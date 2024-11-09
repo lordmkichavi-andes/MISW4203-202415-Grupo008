@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import co.edu.uniandes.vinilos.screens.AddAlbumnScreen
+import co.edu.uniandes.vinilos.screens.GetAlbumScreen
 import co.edu.uniandes.vinilos.screens.GetAlbumesScreen
 
 @Composable
@@ -26,5 +27,16 @@ fun NavGraph(navController: NavHostController) {
                 GetAlbumesScreen(navController, profile = profile)
             }
         }
+        composable("get_album/{profile}/{album_id}") { backStackEntry ->
+            val profile = backStackEntry.arguments?.getString("profile")
+            val album_id = backStackEntry.arguments?.getString("album_id")
+            if (profile != null && album_id != null) {
+                GetAlbumScreen(navController, profile = profile, albumID = album_id)
+            } else if (profile != null ){
+                GetAlbumesScreen(navController, profile = profile)
+            }
+        }
+
+
     }
 }
