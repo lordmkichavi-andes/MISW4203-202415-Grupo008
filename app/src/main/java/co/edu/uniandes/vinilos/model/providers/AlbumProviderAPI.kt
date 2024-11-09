@@ -57,4 +57,25 @@ class AlbumProviderAPI(private val context: Context): AlbumProvider {
 
         requestQueue.add(jsonObjectRequest)
     }
+
+    override fun getAlbum(albumID: Int, onSuccess: (Album) -> Unit, onError: (String) -> Unit) {
+        val requestQueue = Volley.newRequestQueue(context)
+        val jsonArrayRequest = JsonArrayRequest(
+            Request.Method.GET, "$path/$albumID", null,
+            { response ->
+                try {
+                    val albumType = object : TypeToken<Album>() {}.type
+                    val album: Album = Gson().fromJson(response.toString(), albumType)
+                    onSuccess(album)
+                } catch (e: Exception) {
+                    onError("Error al parsear los datos: ${e.localizedMessage}")
+                }
+            },
+            { error ->
+                onError("Error en la solicitud: ${error.message}")
+            }
+        )
+        requestQueue.add(jsonArrayRequest)
+
+    }
 }
