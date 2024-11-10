@@ -74,6 +74,7 @@ fun AddAlbumnScreen(
         AlbumViewModel(AlbumRepository(AlbumProviderAPI(LocalContext.current)))) {
 
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
 
     var name by remember { mutableStateOf("") }
     var cover by remember { mutableStateOf("") }
@@ -289,7 +290,7 @@ fun AddAlbumnScreen(
                                 genre = genre,
                                 recordLabel = recordLabel,
                             )
-                            viewModel.addAlbum(newAlbum, navController)
+                            viewModel.addAlbum(context,newAlbum, navController)
                         },
                         enabled = isFormValid(),
                         modifier = Modifier

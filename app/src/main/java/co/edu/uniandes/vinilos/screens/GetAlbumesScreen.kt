@@ -1,6 +1,7 @@
 package co.edu.uniandes.vinilos.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,7 +40,8 @@ fun GetAlbumesScreen(
     recentlyAddedAlbum: Boolean? = false ,
     viewModel: AlbumViewModel = AlbumViewModel(AlbumRepository(AlbumProviderAPI(LocalContext.current))))
 {
-    viewModel.loadAlbums()
+    val context = LocalContext.current
+    viewModel.loadAlbums(context)
     val albums by viewModel.albums.collectAsState(initial = emptyList())
     val isLoading by viewModel.isLoading.collectAsState()
 
@@ -111,7 +113,8 @@ fun GetAlbumesScreen(
                     AlbumList(
                         albums = albums,
                         modifier = Modifier
-                            .fillMaxSize()
+                            .fillMaxSize(),
+                        navController, profile
                     )
                 }
             }
@@ -152,21 +155,21 @@ private fun AddAlbumButton(navController: NavController) {
 }
 
 @Composable
-fun AlbumList(albums: List<Album>, modifier: Modifier = Modifier) {
+fun AlbumList(albums: List<Album>, modifier: Modifier = Modifier, navController: NavController, profile: String) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp)
     ) {
         items(albums) { album ->
-            AlbumCard(album = album)
+            AlbumCard(album = album, navController, profile)
             Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
 
 @Composable
-fun AlbumCard(album: Album) {
+fun AlbumCard(album: Album, navController: NavController, profile: String) {
     val formattedDate = try {
         val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         val targetFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -180,10 +183,15 @@ fun AlbumCard(album: Album) {
         modifier = Modifier
             .fillMaxWidth()
             .height(80.dp)
-            .testTag("AlbumItem"),
+            .testTag("AlbumItem")
+            .clickable {
+                // Navega a la pantalla de detalle
+                navController.navigate("get_album/${profile}/${album.id}")
+            },
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

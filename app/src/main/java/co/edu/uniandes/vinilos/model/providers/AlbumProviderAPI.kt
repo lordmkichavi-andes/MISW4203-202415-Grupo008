@@ -35,7 +35,7 @@ class AlbumProviderAPI(private val context: Context): AlbumProvider {
         requestQueue.add(jsonArrayRequest)
     }
 
-    override fun addAbum(album: Album, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    override fun addAbum(album: Album, onSuccess: (Album) -> Unit, onError: (String) -> Unit) {
         val requestQueue = Volley.newRequestQueue(context)
 
         // Convertir el objeto Album a JSON usando Gson
@@ -46,8 +46,9 @@ class AlbumProviderAPI(private val context: Context): AlbumProvider {
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.POST, path, albumJson,
             { response ->
-                // Aquí puedes procesar la respuesta del servidor si es necesario
-                onSuccess()
+                val albumType = object : TypeToken<Album>() {}.type
+                val album: Album = Gson().fromJson(response.toString(), albumType)
+                onSuccess(album)
             },
             { error ->
                 onError("Error en la solicitud: ${error.message}")
@@ -55,5 +56,26 @@ class AlbumProviderAPI(private val context: Context): AlbumProvider {
         )
 
         requestQueue.add(jsonObjectRequest)
+    }
+
+    override fun getAlbum(albumID: Int, onSuccess: (Album) -> Unit, onError: (String) -> Unit) {
+        val requestQueue = Volley.newRequestQueue(context)
+        val jsonArrayRequest = JsonArrayRequest(
+            Request.Method.GET, "$path/$albumID", null,
+            { response ->
+                try {
+                    val albumType = object : TypeToken<Album>() {}.type
+                    val album: Album = Gson().fromJson(response.toString(), albumType)
+                    onSuccess(album)
+                } catch (e: Exception) {
+                    onError("Error al parsear los datos: ${e.localizedMessage}")
+                }
+            },
+            { error ->
+                onError("Error en la solicitud: ${error.message}")
+            }
+        )
+        requestQueue.add(jsonArrayRequest)
+
     }
 }
