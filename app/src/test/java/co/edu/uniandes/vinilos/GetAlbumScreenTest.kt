@@ -1,3 +1,4 @@
+import android.content.Context
 import co.edu.uniandes.vinilos.model.models.Album
 import co.edu.uniandes.vinilos.model.providers.AlbumProvider
 import co.edu.uniandes.vinilos.model.repository.AlbumRepository
@@ -22,6 +23,7 @@ class AlbumViewModelTest {
     private val albumProvider = Mockito.mock(AlbumProvider::class.java)
     private val albumRepository = AlbumRepository(albumProvider)
     private lateinit var viewModel: AlbumViewModel
+    val mockContext: Context = Mockito.mock(Context::class.java)
 
     @Before
     fun setup() {
@@ -47,7 +49,7 @@ class AlbumViewModelTest {
             null
         }.`when`(albumProvider).getAlbums(any(), any())
 
-        viewModel.loadAlbums()
+        viewModel.loadAlbums(mockContext)
 
         assertEquals(mockAlbumList, viewModel.albums.first())
     }
@@ -60,7 +62,7 @@ class AlbumViewModelTest {
             null
         }.`when`(albumProvider).getAlbums(any(), any())
 
-        viewModel.loadAlbums()
+        viewModel.loadAlbums(mockContext)
 
         assertTrue(viewModel.albums.first().isEmpty())
     }
@@ -75,7 +77,7 @@ class AlbumViewModelTest {
             null
         }.`when`(albumProvider).getAlbums(any(), any())
 
-        viewModel.loadAlbums()
+        viewModel.loadAlbums(mockContext)
 
         assertEquals(listOf(newAlbum), viewModel.albums.first())
     }
