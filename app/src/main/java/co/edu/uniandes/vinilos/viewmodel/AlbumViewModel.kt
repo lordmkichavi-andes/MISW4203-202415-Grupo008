@@ -14,8 +14,19 @@ import kotlinx.coroutines.launch
 class AlbumViewModel(private val repository: AlbumRepository) : ViewModel() {
     private val _message = MutableStateFlow("")
     val message = _message.asStateFlow()
+
     private val _albums = MutableStateFlow<List<Album>>(emptyList())
     val albums = _albums.asStateFlow()
+    private val _album = MutableStateFlow<Album>(Album(
+        name = "",
+        cover = "",
+        releaseDate = "",
+        description = "",
+        genre = "",
+        recordLabel = "",
+    ))
+    val album = _album.asStateFlow()
+
     private val _recentAddedAlbum = MutableStateFlow(false)
     val recentAddedAlbum = _recentAddedAlbum.asStateFlow()
     private val _isLoading = MutableStateFlow(false)
@@ -54,6 +65,28 @@ class AlbumViewModel(private val repository: AlbumRepository) : ViewModel() {
                 onError = { error ->
                     Log.e("AlbumViewModel", "Error al cargar álbumes: $error")
                     _message.value = "Error al cargar álbumes: $error"
+                    _isLoading.value = false
+                }
+            )
+        }
+    }
+
+    fun getAlbum(context: Context, albumID: Int) {
+        Log.d("AlbumViewModel", "Iniciando carga de álbum con id: $albumID.")
+        _isLoading.value = true
+        viewModelScope.launch {
+            repository.getAlbum(
+                context= context,
+                albumID,
+                onSuccess = { album ->
+                    Log.d("AlbumViewModel", "Álbum  ${album.name} cargado con éxito.")
+                    _album.value = album
+                    _message.value = "Álbum cargado exitosamente"
+                    _isLoading.value = false
+                },
+                onError = { error ->
+                    Log.e("AlbumViewModel", "Error al cargar álbum: $error")
+                    _message.value = "Error al cargar álbum: $error"
                     _isLoading.value = false
                 }
             )
