@@ -1,10 +1,13 @@
 package co.edu.uniandes.vinilos.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import co.edu.uniandes.vinilos.R
 import co.edu.uniandes.vinilos.model.providers.ArtistProviderAPI
 import co.edu.uniandes.vinilos.model.repository.ArtistRepository
 import co.edu.uniandes.vinilos.ui.components.MainScreenWithBottomBar
@@ -42,26 +46,33 @@ fun ArtistListScreen(navController: NavController) {
         initialTitle = "Listado de artistas",
         onOptionSelected = { route -> navController.navigate(route) },
         showBackIcon = true,
-        backDestination = "login",
+        backDestination = "get_albumes/Usuario/0",
         profile = "Usuario"
     ) { padding ->
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(Color(0xFFF0F0F0)),
-            contentAlignment = Alignment.Center
+                .background(Color(0xFFF0F0F0))
         ) {
             when {
                 isLoading -> {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         CircularProgressIndicator()
                         Spacer(modifier = Modifier.height(16.dp))
                         Text("Cargando tus artistas de vinilos favoritos")
                     }
                 }
                 errorMessage != null -> {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Text(text = errorMessage ?: "Error desconocido")
                         Button(onClick = { viewModel.loadArtists() }) {
                             Text("Reintentar")
@@ -69,12 +80,24 @@ fun ArtistListScreen(navController: NavController) {
                     }
                 }
                 artists.isEmpty() -> {
-                    Text("¡Ups! No se encontraron artistas...")
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text("¡Ups! No se encontraron artistas...")
+                    }
                 }
                 else -> {
-                    LazyColumn {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(top = 16.dp)
+                    ) {
                         items(artists) { artist ->
-                            ArtistItem(artist)
+                            ArtistItem(artist = artist) {
+                                navController.currentBackStackEntry?.savedStateHandle?.set("artist", artist)
+                                navController.navigate("artist_detail")
+                            }
                         }
                     }
                 }
@@ -84,49 +107,60 @@ fun ArtistListScreen(navController: NavController) {
 }
 
 @Composable
-fun ArtistItem(artist: Artist) {
-    val formattedDate = formatBirthDate(artist.birthDate)
-
+fun ArtistItem(artist: Artist, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp)
-            .height(80.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable { onClick() },
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFEFEFEF)),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF8F8F8)),
+        elevation = CardDefaults.cardElevation(6.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(20.dp)
         ) {
+            // Imagen del artista
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(artist.image)
                     .crossfade(true)
+                    .error(R.drawable.noartists)
+                    .placeholder(R.drawable.noartists)
                     .build(),
                 contentDescription = "Imagen de artista",
                 modifier = Modifier
-                    .size(64.dp)
-                    .padding(end = 8.dp)
+                    .size(96.dp)
+                    .padding(end = 20.dp)
             )
-            Column {
+
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(
                     text = artist.name,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-                Text(
-                    text = formattedDate,
-                    color = Color.Gray,
-                    fontSize = 14.sp
-                )
-                Text(
-                    text = artist.description ?: "Descripción no disponible",
-                    fontSize = 12.sp,
-                    maxLines = 2,
+                    fontSize = 20.sp,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.CalendarToday,
+                        contentDescription = "Fecha de nacimiento",
+                        modifier = Modifier.size(20.dp),
+                        tint = Color.Gray
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = formatBirthDate(artist.birthDate),
+                        color = Color.Gray,
+                        fontSize = 16.sp
+                    )
+                }
             }
         }
     }

@@ -9,6 +9,7 @@ import co.edu.uniandes.vinilos.screens.AddAlbumnScreen
 import co.edu.uniandes.vinilos.screens.GetAlbumScreen
 import co.edu.uniandes.vinilos.screens.ArtistListScreen
 import co.edu.uniandes.vinilos.screens.GetAlbumesScreen
+import co.edu.uniandes.vinilos.viewmodel.Artist
 
 @Composable
 fun NavGraph(navController: NavHostController) {
