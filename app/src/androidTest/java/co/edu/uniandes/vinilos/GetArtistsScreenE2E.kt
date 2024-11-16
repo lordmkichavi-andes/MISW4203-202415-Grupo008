@@ -18,6 +18,16 @@ class GetArtistsScreenE2ETest {
 
     @Before
     fun setUp() {
+    }
+
+    @After
+    fun tearDown() {
+        Thread.sleep(1000)
+        composeTestRule.activityRule.scenario.close()
+    }
+
+    @Test
+    fun testAlbumCatalogIsDisplayedForVisitorProfile() {
         composeTestRule.activityRule.scenario.recreate()
         composeTestRule.activityRule.scenario.moveToState(Lifecycle.State.RESUMED)
 
@@ -43,17 +53,45 @@ class GetArtistsScreenE2ETest {
             .assertExists()
 
         composeTestRule.onNodeWithText("Listado de artistas").performClick()
+        val timeTaken = measureTimeMillis {
+            composeTestRule.waitUntil(timeoutMillis = 10000) {
+                composeTestRule.onAllNodesWithTag("ArtistItem").fetchSemanticsNodes().isNotEmpty()
+            }
 
-    }
-
-    @After
-    fun tearDown() {
-        Thread.sleep(1000)
-        composeTestRule.activityRule.scenario.close()
+            composeTestRule.onAllNodesWithTag("ArtistItem")
+                .onFirst()
+                .assertIsDisplayed()
+        }
+        println("Tiempo para testArtistListIsDisplayedForVisitorProfile: $timeTaken ms")
     }
 
     @Test
-    fun testAlbumCatalogIsDisplayedForVisitorProfile() {
+    fun testAlbumCatalogIsDisplayedForCollectorProfile() {
+        composeTestRule.activityRule.scenario.recreate()
+        composeTestRule.activityRule.scenario.moveToState(Lifecycle.State.RESUMED)
+
+        composeTestRule.waitUntil(timeoutMillis = 10000) {
+            composeTestRule.onAllNodes(hasText("Selecciona tu tipo de usuario para comenzar:"))
+                .fetchSemanticsNodes().isNotEmpty()
+        }
+
+        composeTestRule.onNodeWithText("Selecciona tu tipo de usuario para comenzar:")
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithText("Coleccionista").performClick()
+
+        composeTestRule.waitUntil(timeoutMillis = 10000) {
+            composeTestRule.onAllNodes(hasContentDescriptionExactly("Menú"))
+                .fetchSemanticsNodes().isNotEmpty()
+        }
+
+
+        composeTestRule.onNodeWithContentDescription("Menú")
+            .performClick()
+
+        composeTestRule.onNodeWithText("Listado de artistas")
+            .assertExists()
+
+        composeTestRule.onNodeWithText("Listado de artistas").performClick()
         val timeTaken = measureTimeMillis {
             composeTestRule.waitUntil(timeoutMillis = 10000) {
                 composeTestRule.onAllNodesWithTag("ArtistItem").fetchSemanticsNodes().isNotEmpty()
