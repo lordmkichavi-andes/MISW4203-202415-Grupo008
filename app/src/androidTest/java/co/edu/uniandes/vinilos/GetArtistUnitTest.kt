@@ -19,7 +19,6 @@ class ArtistListScreenTest {
 
     @Test
     fun testFormatBirthDateReturnsCorrectly() {
-        // Prueba directa de la función de formato
         val formattedDate = formatBirthDate("1990-01-01T00:00:00.000Z")
         Assert.assertEquals("01/01/1990", formattedDate)
 
