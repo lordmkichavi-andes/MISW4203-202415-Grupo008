@@ -83,7 +83,7 @@ fun MainScreenWithBottomBar(
                                     expanded = false
                                     onOptionSelected("get_artistas")
                                 }
-                            )
+                            )/*
                             DropdownMenuItem(
                                 text = {
                                     Text(
@@ -99,7 +99,7 @@ fun MainScreenWithBottomBar(
                                     expanded = false
                                     onOptionSelected("get_coleccionistas")
                                 }
-                            )
+                            )*/
                         }
                     }
                 },
