@@ -52,16 +52,17 @@ class GetAlbumCatalogE2ETest {
     }
 
     @Test
-    fun testAlbumLoadingMessageIsDisplayed() {
+    fun testAlbumCatalogDisplaysAlbums() {
         val timeTaken = measureTimeMillis {
-            composeTestRule.waitUntil(timeoutMillis = 5000) {
-                composeTestRule.onAllNodesWithText("Cargando tus álbumes de vinilos favoritos.")
-                    .fetchSemanticsNodes().isNotEmpty()
+            composeTestRule.waitUntil(timeoutMillis = 10000) {
+                composeTestRule.onAllNodesWithTag("AlbumItem").fetchSemanticsNodes().isNotEmpty()
             }
-
-            composeTestRule.onNodeWithText("Cargando tus álbumes de vinilos favoritos.")
+            composeTestRule.onAllNodesWithTag("AlbumItem")
+                .onFirst()
                 .assertIsDisplayed()
+            val albumNodesCount = composeTestRule.onAllNodesWithTag("AlbumItem").fetchSemanticsNodes().size
+            Assert.assertTrue("Debe haber más de un álbum en la lista", albumNodesCount > 1)
         }
-        println("Tiempo para testAlbumLoadingMessageIsDisplayed: $timeTaken ms")
+        println("Tiempo para testAlbumCatalogDisplaysAlbums: $timeTaken ms")
     }
 }

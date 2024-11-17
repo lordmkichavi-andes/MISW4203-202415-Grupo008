@@ -109,10 +109,28 @@ El proyecto incluye pruebas de extremo a extremo (E2E) para verificar las funcio
      - `testAlbumCatalogIsDisplayedForVisitorProfile`: Verifica que el catálogo se muestra correctamente.
      - `testAlbumLoadingMessageIsDisplayed`: Confirma que aparece un mensaje de carga mientras se obtienen los datos.
 
+#### 3️⃣ **GetArtistsScreenE2E**
+   - Evalúa la visualización del listado de artistas para ambos perfiles (“Coleccionista” y “Visitante”). 
+   - **Métodos**:
+     - `testAlbumCatalogIsDisplayedForVisitorProfile`: Verifica que el listado de artistas se muestra correctamente.
+     - `testAlbumCatalogIsDisplayedForCollectorProfile`: Verifica que el catálogo se muestra correctamente para el perfil coleccionista.
+
+#### 4️⃣ **GetAlbumScreenE2E**
+   - Evalúa la visualización del detalle de álbum para ambos perfiles.
+   - **Métodos**:
+     - `testAddTrackButtonIsDisplayedForCollectorProfile`: Verifica que el detalle del álbum se muestre correctamente para el perfil coleccionista.
+     - `testAddTrackButtonIsNotDisplayedForUserProfile`: Verifica que el detalle del álbum se muestre correctamente para el perfil del usuario.
+
+#### 5️⃣ **ArtistDetailScreenE2E**
+   - Evalúa la visualización del detalle de artista para ambos perfiles.
+   - **Métodos**:
+     - `testAlbumCatalogIsDisplayedForCollectorProfile`: Verifica que el detalle del artista se muestre correctamente para el perfil coleccionista.
+     - `testAlbumCatalogIsDisplayedForVisitorProfile`: Verifica que el detalle del artista se muestre correctamente para el perfil del usuario.
+
 ### 🚀 Ejecución de Pruebas
 
 #### 🔹 Desde Android Studio:
-   - Abre el archivo de prueba (`AddAlbumScreenE2E.kt` o `GetAlbumCatalogE2ETest.kt`).
+   - Abre el archivo de prueba (`AddAlbumScreenE2E.kt`, `GetAlbumCatalogE2ETest.kt`, `GetArtistsScreenE2ETest.kt`, `GetAlbumScreenE2E.kt` o `ArtistDetailScreenE2E.kt`).
    - Haz clic derecho en el método que deseas ejecutar y selecciona **Run 'NombreDeLaPrueba'**.
 
 #### 🔹 Desde la Terminal:
@@ -126,6 +144,21 @@ El proyecto incluye pruebas de extremo a extremo (E2E) para verificar las funcio
      - Para **GetAlbumCatalogE2ETest**:
        ```bash
        ./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class="co.edu.uniandes.vinilos.GetAlbumCatalogE2ETest"
+       ```
+
+     - Para **GetArtistsScreenE2ETest**:
+       ```bash
+       ./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class="co.edu.uniandes.vinilos.GetArtistsScreenE2ETest"
+       ```
+
+     - Para **GetAlbumScreenE2E**:
+       ```bash
+       ./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class="co.edu.uniandes.vinilos.GetAlbumScreenE2E"
+       ```
+
+     - Para **ArtistDetailScreenE2E**:
+       ```bash
+       ./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class="co.edu.uniandes.vinilos.ArtistDetailScreenE2E"
        ```
 
 > **ℹ️ Nota**: Los resultados de cada prueba, incluyendo el tiempo de ejecución en milisegundos, aparecerán en la consola de Android Studio o en la terminal para facilitar el análisis de rendimiento.

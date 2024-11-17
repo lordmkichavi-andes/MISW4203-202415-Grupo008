@@ -25,8 +25,6 @@ class GetAlbumScreenE2ETest {
             composeTestRule.onAllNodes(hasText("Selecciona tu tipo de usuario para comenzar:"))
                 .fetchSemanticsNodes().isNotEmpty()
         }
-
-        composeTestRule.onNodeWithText("Coleccionista").performClick()
     }
 
     @After
@@ -37,6 +35,8 @@ class GetAlbumScreenE2ETest {
 
     @Test
     fun testAddTrackButtonIsDisplayedForCollectorProfile() {
+        composeTestRule.onNodeWithText("Coleccionista").performClick()
+
         val timeTaken = measureTimeMillis {
             composeTestRule.waitUntil(timeoutMillis = 10000) {
                 composeTestRule.onAllNodesWithTag("AlbumItem").fetchSemanticsNodes().isNotEmpty()
@@ -52,4 +52,24 @@ class GetAlbumScreenE2ETest {
         }
         println("Tiempo para testAddTrackButtonIsDisplayedForCollectorProfile: $timeTaken ms")
     }
+
+    @Test
+    fun testAddTrackButtonIsNotDisplayedForUserProfile() {
+        composeTestRule.onNodeWithText("Usuario").performClick()
+
+        val timeTaken = measureTimeMillis {
+            composeTestRule.waitUntil(timeoutMillis = 10000) {
+                composeTestRule.onAllNodesWithTag("AlbumItem").fetchSemanticsNodes().isNotEmpty()
+            }
+
+            composeTestRule.onAllNodesWithTag("AlbumItem").onFirst().performClick()
+            composeTestRule.waitUntil(timeoutMillis = 10000) {
+                composeTestRule.onAllNodesWithTag("AgregarTrackButton").fetchSemanticsNodes().isEmpty()
+            }
+
+            composeTestRule.onAllNodesWithTag("AgregarTrackButton").assertCountEquals(0)
+        }
+        println("Tiempo para testAddTrackButtonIsNotDisplayedForUserProfile: $timeTaken ms")
+    }
+
 }
