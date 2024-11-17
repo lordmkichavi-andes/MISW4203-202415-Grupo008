@@ -46,4 +46,5 @@ class ArtistListScreenTest {
         composeTestRule.onNodeWithText("Nombre del Artista").assertExists()
         composeTestRule.onNodeWithText("01/01/1990").assertExists()
     }
+
 }
