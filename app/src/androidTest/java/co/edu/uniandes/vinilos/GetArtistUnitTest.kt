@@ -18,19 +18,6 @@ class ArtistListScreenTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun testFormatBirthDateReturnsCorrectly() {
-        // Prueba directa de la función de formato
-        val formattedDate = formatBirthDate("1990-01-01T00:00:00.000Z")
-        Assert.assertEquals("01/01/1990", formattedDate)
-
-        val unknownDate = formatBirthDate(null)
-        Assert.assertEquals("Fecha desconocida", unknownDate)
-
-        val invalidDate = formatBirthDate("invalid-date")
-        Assert.assertEquals("Fecha desconocida", invalidDate)
-    }
-
-    @Test
     fun testArtistItemDisplaysCorrectly() {
         composeTestRule.setContent {
             ArtistItem(
@@ -46,5 +33,17 @@ class ArtistListScreenTest {
 
         composeTestRule.onNodeWithText("Nombre del Artista").assertExists()
         composeTestRule.onNodeWithText("01/01/1990").assertExists()
+    }
+
+    @Test
+    fun testFormatBirthDateReturnsCorrectly() {
+        val formattedDate = formatBirthDate("1990-01-01T00:00:00.000Z")
+        Assert.assertEquals("01/01/1990", formattedDate)
+
+        val unknownDate = formatBirthDate(null)
+        Assert.assertEquals("Fecha desconocida", unknownDate)
+
+        val invalidDate = formatBirthDate("invalid-date")
+        Assert.assertEquals("Fecha desconocida", invalidDate)
     }
 }
