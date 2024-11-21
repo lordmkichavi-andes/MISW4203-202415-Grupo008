@@ -1,5 +1,6 @@
 package co.edu.uniandes.vinilos.ui.components
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
@@ -26,6 +27,12 @@ fun MainScreenWithBottomBar(
     profile: String,
     content: @Composable (PaddingValues) -> Unit,
 ) {
+    // Detectar si el sistema está en modo oscuro
+    val isDarkTheme = isSystemInDarkTheme()
+    // Definir colores según el tema
+    val backgroundColor = if (isDarkTheme) Color.Black else Color.White
+    val contentColor = if (isDarkTheme) Color.White else Color.Black
+
     var title by remember { mutableStateOf(initialTitle) }
     var expanded by remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf("Catálogo de álbumes") }
@@ -33,7 +40,12 @@ fun MainScreenWithBottomBar(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = title, fontWeight = FontWeight.Bold ) },
+                title = { Text(text = title, fontWeight = FontWeight.Bold, color = contentColor ) },
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = backgroundColor, // Fondo dinámico según el tema
+                    titleContentColor = contentColor, // Título dinámico según el tema
+                    navigationIconContentColor = contentColor // Iconos dinámicos
+                ),
                 navigationIcon = {
                     Box {
                         if (showBackIcon) {
@@ -108,7 +120,6 @@ fun MainScreenWithBottomBar(
                         Icon(imageVector = Icons.Default.ExitToApp, contentDescription = "Salir", tint = Color.Black)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
             )
         },
         bottomBar = {

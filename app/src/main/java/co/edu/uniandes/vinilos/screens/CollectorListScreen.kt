@@ -158,7 +158,7 @@ fun CollectorItem(collector: Collector, onClick: () -> Unit) {
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
 
             }
