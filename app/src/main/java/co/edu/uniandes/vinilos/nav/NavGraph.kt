@@ -9,6 +9,7 @@ import co.edu.uniandes.vinilos.screens.AddAlbumnScreen
 import co.edu.uniandes.vinilos.screens.ArtistDetailScreen
 import co.edu.uniandes.vinilos.screens.GetAlbumScreen
 import co.edu.uniandes.vinilos.screens.ArtistListScreen
+import co.edu.uniandes.vinilos.screens.CollectorsListScreen
 import co.edu.uniandes.vinilos.screens.GetAlbumesScreen
 import co.edu.uniandes.vinilos.viewmodel.Artist
 
@@ -47,6 +48,9 @@ fun NavGraph(navController: NavHostController) {
             artist?.let {
                 ArtistDetailScreen(navController = navController, artist = it)
             }
+        }
+        composable("get_coleccionistas") {
+            CollectorsListScreen(navController = navController)
         }
 
     }

@@ -444,7 +444,7 @@ fun CustomDropDown(
         trailingIcon = {
             Icon(
                 imageVector = if (isMenuExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                contentDescription = "Desplegar menú",
+                contentDescription = "Desplegar menú - $text",
                 modifier = Modifier.clickable { isMenuExpanded = !isMenuExpanded }
             )
         },
