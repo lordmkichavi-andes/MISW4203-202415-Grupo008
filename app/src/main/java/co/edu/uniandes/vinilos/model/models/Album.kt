@@ -12,5 +12,5 @@ data class Album(
     val description: String,
     val genre: String,
     val recordLabel: String,
-    val tracks: List<Track>? = null
+    val tracks: List<Track>? = emptyList()
 ) : Parcelable
