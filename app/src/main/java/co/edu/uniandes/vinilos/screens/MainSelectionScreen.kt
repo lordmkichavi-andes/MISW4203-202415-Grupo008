@@ -2,6 +2,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,15 +24,22 @@ import co.edu.uniandes.vinilos.viewmodel.MainSelectionViewModel
 fun MainSelectionScreen(navController: NavController, viewModel: MainSelectionViewModel = viewModel()) {
 
     val selectedProfile by viewModel.selectedProfile.collectAsState()
+    // Detectar si el sistema está en modo oscuro
+    val isDarkTheme = isSystemInDarkTheme()
+    // Definir colores según el tema
+    val backgroundColor = if (isDarkTheme) Color.Black else Color.White
+    val contentColor = if (isDarkTheme) Color.White else Color.Black
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text(text = "Vinilos") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
+                title = { Text(text = "Vinilos",  color = contentColor ) },
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = backgroundColor, // Fondo dinámico según el tema
+                    titleContentColor = contentColor, // Título dinámico según el tema
+                    navigationIconContentColor = contentColor // Iconos dinámicos
+                ),
             )
         },
         content = { paddingValues ->
