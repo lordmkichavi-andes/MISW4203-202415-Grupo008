@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import co.edu.uniandes.vinilos.model.models.Album
 import co.edu.uniandes.vinilos.viewmodel.AlbumViewModel
@@ -30,7 +29,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
-import co.edu.uniandes.vinilos.ui.theme.InformativeGreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -127,8 +125,8 @@ private fun AddAlbumButton(navController: NavController) {
     Button(
         onClick = { navController.navigate("add_album") },
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent,
-            contentColor = Color.Transparent
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
         ),
         modifier = Modifier
             .padding(8.dp)
@@ -143,13 +141,14 @@ private fun AddAlbumButton(navController: NavController) {
             Icon(
                 imageVector = Icons.Default.Add, // Cambia el ícono si es necesario
                 contentDescription = "Agregar",
-                tint = Color.Black
+                tint = MaterialTheme.colorScheme.onPrimary
             )
         }
         Spacer(modifier = Modifier.width(8.dp)) // Espacio entre el icono y el texto
         Text(
             text = "Agregar álbum",
-            color = Color.Black
+            color = Color.Black,
+            style = MaterialTheme.typography.labelLarge
         )
     }
 }
@@ -212,12 +211,12 @@ fun AlbumCard(album: Album, navController: NavController, profile: String) {
                 Text(
                     text = album.name ?: "Título desconocido",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
                     text = formattedDate,
                     color = Color.Gray,
-                    fontSize = 14.sp
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
         }
@@ -232,7 +231,7 @@ fun InformationBackgroundText(text: String) {
             .size(140.dp)
             .padding(horizontal = 16.dp)
             .background(
-                InformativeGreen,
+                color = MaterialTheme.colorScheme.primaryContainer,
                 shape = RoundedCornerShape(16.dp)
             ),
         contentAlignment = Alignment.Center
@@ -240,12 +239,9 @@ fun InformationBackgroundText(text: String) {
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.headlineLarge.copy(
-                fontWeight = FontWeight.Bold
-            ),
-            textAlign = TextAlign.Center,
-            fontSize = 32.sp,
-            color = Color.White
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            textAlign = TextAlign.Center
         )
 
     }
