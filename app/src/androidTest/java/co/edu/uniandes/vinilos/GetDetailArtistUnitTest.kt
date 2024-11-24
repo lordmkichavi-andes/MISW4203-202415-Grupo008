@@ -9,6 +9,7 @@ import co.edu.uniandes.vinilos.screens.ArtistDetailScreen
 import co.edu.uniandes.vinilos.viewmodel.Artist
 import org.junit.Rule
 import org.junit.Test
+import kotlin.random.Random
 
 class GetDetailArtistUnitTest {
 
@@ -101,5 +102,95 @@ class GetDetailArtistUnitTest {
         composeTestRule.onNodeWithText("Artista Con Álbumes").assertExists()
         composeTestRule.onNodeWithText("Álbum 1").assertExists()
         composeTestRule.onNodeWithText("Álbum 2").assertExists()
+    }
+
+    @Test
+    fun testArtistDetailScreenWithRandomData() {
+        val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
+
+        val randomName = generateRandomString(10)
+        val randomImage = "https://example.com/${generateRandomString(5)}.jpg"
+        val randomDescription = generateRandomString(20)
+        val randomAlbums = generateRandomAlbums()
+
+        val artist = Artist(
+            id = Random.nextInt(1, 100),
+            name = randomName,
+            image = randomImage,
+            birthDate = "1990-01-01T00:00:00.000Z",
+            description = randomDescription,
+            albums = randomAlbums
+        )
+
+        composeTestRule.setContent {
+            ArtistDetailScreen(navController = navController, artist = artist)
+        }
+
+        composeTestRule.onNodeWithText(randomName).assertExists()
+        randomAlbums.forEach { album ->
+            composeTestRule.onNodeWithText(album.name).assertExists()
+        }
+    }
+
+    @Test
+    fun testArtistDetailScreenHandlesEmptyData() {
+        val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
+
+        val artist = Artist(
+            id = 1,
+            name = "",
+            image = "",
+            birthDate = "",
+            description = "",
+            albums = emptyList()
+        )
+
+        composeTestRule.setContent {
+            ArtistDetailScreen(navController = navController, artist = artist)
+        }
+
+        composeTestRule.waitForIdle()
+
+        composeTestRule.onNodeWithText("Descripción no disponible").assertExists()
+    }
+
+    @Test
+    fun testArtistDetailScreenWithInvalidData() {
+        val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
+
+        val artist = Artist(
+            id = 1,
+            name = "Artista Inválido",
+            image = "https://example.com/artist.jpg",
+            birthDate = "1990-01-01T00:00:00.000Z",
+            description = null,
+            albums = emptyList()
+        )
+
+        composeTestRule.setContent {
+            ArtistDetailScreen(navController = navController, artist = artist)
+        }
+
+        composeTestRule.onNodeWithText("Descripción no disponible").assertExists()
+    }
+
+    private fun generateRandomString(length: Int): String {
+        val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+        return (1..length).map { chars.random() }.joinToString("")
+    }
+
+    private fun generateRandomAlbums(): List<Album> {
+        return (1..Random.nextInt(1, 5)).map {
+            Album(
+                id = Random.nextInt(1, 100),
+                name = generateRandomString(10),
+                cover = "https://example.com/${generateRandomString(5)}.jpg",
+                releaseDate = "200${Random.nextInt(1, 9)}-0${Random.nextInt(1, 9)}-01",
+                description = generateRandomString(20),
+                genre = generateRandomString(5),
+                recordLabel = generateRandomString(10),
+                tracks = emptyList()
+            )
+        }
     }
 }

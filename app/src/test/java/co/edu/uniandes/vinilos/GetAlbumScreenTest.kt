@@ -6,17 +6,15 @@ import co.edu.uniandes.vinilos.viewmodel.AlbumViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.setMain
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.kotlin.any
-import org.mockito.kotlin.doAnswer
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Assert.assertFalse
 
 class AlbumViewModelTest {
 

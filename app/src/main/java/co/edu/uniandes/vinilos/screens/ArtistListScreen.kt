@@ -58,49 +58,16 @@ fun ArtistListScreen(navController: NavController) {
         ) {
             when {
                 isLoading -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        CircularProgressIndicator()
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text("Cargando tus artistas de vinilos favoritos")
-                    }
+                    LoadingContent()
                 }
                 errorMessage != null -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(text = errorMessage ?: "Error desconocido")
-                        Button(onClick = { viewModel.loadArtists() }) {
-                            Text("Reintentar")
-                        }
-                    }
+                    ErrorContent(errorMessage, onRetry = { viewModel.loadArtists() })
                 }
                 artists.isEmpty() -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text("¡Ups! No se encontraron artistas...")
-                    }
+                    EmptyContent()
                 }
                 else -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(top = 16.dp)
-                    ) {
-                        items(artists) { artist ->
-                            ArtistItem(artist = artist) {
-                                navController.currentBackStackEntry?.savedStateHandle?.set("artist", artist)
-                                navController.navigate("artist_detail")
-                            }
-                        }
-                    }
+                    ArtistList(artists, navController)
                 }
             }
         }
@@ -123,7 +90,6 @@ fun ArtistItem(artist: Artist, onClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(20.dp)
         ) {
-            // Imagen del artista
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(artist.image)
@@ -131,7 +97,7 @@ fun ArtistItem(artist: Artist, onClick: () -> Unit) {
                     .error(R.drawable.noartists)
                     .placeholder(R.drawable.noartists)
                     .build(),
-                contentDescription = "Imagen de artista",
+                contentDescription = "Imagen del artista ${artist.name}",
                 modifier = Modifier
                     .size(96.dp)
                     .padding(end = 20.dp)
@@ -154,7 +120,7 @@ fun ArtistItem(artist: Artist, onClick: () -> Unit) {
                         imageVector = Icons.Default.CalendarToday,
                         contentDescription = "Fecha de nacimiento",
                         modifier = Modifier.size(20.dp),
-                        tint = Color.Gray
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -180,5 +146,61 @@ fun formatBirthDate(birthDate: String?): String {
         }
     } else {
         "Fecha desconocida"
+    }
+}
+
+@Composable
+fun LoadingContent() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator()
+        Spacer(modifier = Modifier.height(16.dp))
+        Text("Cargando tus artistas de vinilos favoritos", color = MaterialTheme.colorScheme.onBackground)
+    }
+}
+
+@Composable
+fun ErrorContent(errorMessage: String?, onRetry: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = errorMessage ?: "Error desconocido", color = MaterialTheme.colorScheme.error)
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = onRetry, modifier = Modifier.testTag("RetryButton")) {
+            Text("Reintentar")
+        }
+    }
+}
+
+@Composable
+fun EmptyContent() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("¡Ups! No se encontraron artistas...", color = MaterialTheme.colorScheme.onBackground)
+    }
+}
+
+@Composable
+fun ArtistList(artists: List<Artist>, navController: NavController) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag("ArtistList"),
+        contentPadding = PaddingValues(top = 16.dp)
+    ) {
+        items(artists) { artist ->
+            ArtistItem(artist = artist) {
+                navController.currentBackStackEntry?.savedStateHandle?.set("artist", artist)
+                navController.navigate("artist_detail")
+            }
+        }
     }
 }
