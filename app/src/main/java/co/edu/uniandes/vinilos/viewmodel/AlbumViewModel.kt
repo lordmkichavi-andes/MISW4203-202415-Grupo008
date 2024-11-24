@@ -151,4 +151,30 @@ class AlbumViewModel(private val repository: AlbumRepository) : ViewModel() {
             _message.value = ""
         }
     }
+
+    fun loadAlbumsByIds(context: Context, albumIds: List<Int>) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            val albums = mutableListOf<Album>()
+            for (id in albumIds) {
+                try {
+                    repository.getAlbum(
+                        context = context,
+                        albumID = id,
+                        onSuccess = { album ->
+                            albums.add(album)
+                        },
+                        onError = { error ->
+                            _message.value = "Error al cargar el álbum con id $id: $error"
+                        }
+                    )
+                } catch (e: Exception) {
+                    _message.value = "Error inesperado al cargar el álbum con id $id."
+                }
+            }
+            _albums.value = albums
+            _isLoading.value = false
+        }
+    }
+
 }
