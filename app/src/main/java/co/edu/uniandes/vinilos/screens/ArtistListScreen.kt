@@ -112,7 +112,8 @@ fun ArtistItem(artist: Artist, onClick: () -> Unit) {
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -120,12 +121,12 @@ fun ArtistItem(artist: Artist, onClick: () -> Unit) {
                         imageVector = Icons.Default.CalendarToday,
                         contentDescription = "Fecha de nacimiento",
                         modifier = Modifier.size(20.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = formatBirthDate(artist.birthDate),
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 16.sp
                     )
                 }
