@@ -118,7 +118,7 @@ fun CollectorsListScreen(
                         items(collectors) { collector ->
                             CollectorItem(collector = collector) {
                                 navController.currentBackStackEntry?.savedStateHandle?.set("collector", collector)
-                                navController.navigate("artist_detail")
+                                navController.navigate("collector_detail")
                             }
                         }
                     }
