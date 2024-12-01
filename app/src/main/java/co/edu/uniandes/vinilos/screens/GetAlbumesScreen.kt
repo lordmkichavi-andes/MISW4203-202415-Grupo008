@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import co.edu.uniandes.vinilos.model.models.Album
@@ -28,16 +29,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GetAlbumesScreen(
     navController: NavController,
-    profile:String,
-    recentlyAddedAlbum: Boolean? = false ,
-    viewModel: AlbumViewModel = AlbumViewModel(AlbumRepository(AlbumProviderAPI(LocalContext.current))))
-{
+    profile: String,
+    recentlyAddedAlbum: Boolean? = false,
+    viewModel: AlbumViewModel = AlbumViewModel(AlbumRepository(AlbumProviderAPI(LocalContext.current)))
+) {
     val context = LocalContext.current
     viewModel.loadAlbums(context)
     val albums by viewModel.albums.collectAsState(initial = emptyList())
@@ -56,7 +58,8 @@ fun GetAlbumesScreen(
         if (isLoading) {
             Box(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .semantics { contentDescription = "Cargando álbumes de vinilos" },
                 contentAlignment = Alignment.Center
             ) {
                 Column(
@@ -80,7 +83,7 @@ fun GetAlbumesScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Error,
-                            contentDescription = "No albums",
+                            contentDescription = "Sin álbumes",
                             modifier = Modifier.size(100.dp),
                             tint = Color.Gray
                         )
@@ -91,9 +94,8 @@ fun GetAlbumesScreen(
                 if (profile == "Coleccionista") {
                     AddAlbumButton(navController)
                 }
-
             } else {
-                Column (
+                Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues),
@@ -104,10 +106,9 @@ fun GetAlbumesScreen(
                     }
                     if (recentlyAddedAlbum == true) {
                         Spacer(modifier = Modifier.height(10.dp))
-                        InformationBackgroundText(text = "Album agregado correctamente")
+                        InformationBackgroundText(text = "Álbum agregado correctamente")
                     }
                     Spacer(modifier = Modifier.height(10.dp))
-                    // Muestra la lista de álbumes cuando no está vacía
                     AlbumList(
                         albums = albums,
                         modifier = Modifier
@@ -118,7 +119,7 @@ fun GetAlbumesScreen(
             }
         }
     }
-    }
+}
 
 @Composable
 private fun AddAlbumButton(navController: NavController) {
@@ -131,25 +132,23 @@ private fun AddAlbumButton(navController: NavController) {
         modifier = Modifier
             .padding(8.dp)
             .testTag("AgregarAlbumButton")
+            .semantics { contentDescription = "Botón para agregar un álbum" }
     ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp) // Define el tamaño del cuadrado
-                .background(Color.White, shape = RoundedCornerShape(4.dp)),
-            contentAlignment = Alignment.Center
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
             Icon(
-                imageVector = Icons.Default.Add, // Cambia el ícono si es necesario
-                contentDescription = "Agregar",
+                imageVector = Icons.Default.Add,
+                contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimary
             )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "Agregar álbum",
+                style = MaterialTheme.typography.labelLarge
+            )
         }
-        Spacer(modifier = Modifier.width(8.dp)) // Espacio entre el icono y el texto
-        Text(
-            text = "Agregar álbum",
-            color = Color.Black,
-            style = MaterialTheme.typography.labelLarge
-        )
     }
 }
 
@@ -184,13 +183,11 @@ fun AlbumCard(album: Album, navController: NavController, profile: String) {
             .height(80.dp)
             .testTag("AlbumItem")
             .clickable {
-                // Navega a la pantalla de detalle
                 navController.navigate("get_album/${profile}/${album.id}")
             },
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -201,7 +198,7 @@ fun AlbumCard(album: Album, navController: NavController, profile: String) {
                     .data(album.cover)
                     .crossfade(true)
                     .build(),
-                contentDescription = "Imagen de álbum",
+                contentDescription = "Portada del álbum ${album.name}",
                 modifier = Modifier
                     .size(64.dp)
                     .padding(end = 8.dp)
@@ -211,11 +208,12 @@ fun AlbumCard(album: Album, navController: NavController, profile: String) {
                 Text(
                     text = album.name ?: "Título desconocido",
                     fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = formattedDate,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodySmall
                 )
             }
@@ -236,7 +234,6 @@ fun InformationBackgroundText(text: String) {
                 shape = RoundedCornerShape(16.dp)
             ),
         contentAlignment = Alignment.Center
-
     ) {
         Text(
             text = text,
@@ -244,6 +241,5 @@ fun InformationBackgroundText(text: String) {
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             textAlign = TextAlign.Center
         )
-
     }
 }
