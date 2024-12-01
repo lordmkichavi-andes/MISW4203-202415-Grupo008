@@ -49,13 +49,28 @@ class AddAlbumScreenE2E {
                 .assertIsDisplayed()
                 .performClick()
             composeTestRule.onNodeWithTag("NombreField").performTextInput("Álbum de prueba")
-            composeTestRule.onNodeWithTag("PortadaField").performTextInput("https://example.com/image.jpg")
-            composeTestRule.onNodeWithTag("FechaField").performClick()
+            composeTestRule.onNodeWithTag("PortadaField")
+                .performTextInput("https://example.com/image.jpg")
+            composeTestRule
+                .onNodeWithContentDescription("Select date")
+                .performClick()
+
+            composeTestRule
+                .onNodeWithText("OK")
+                .performClick()
+
+
             composeTestRule.onNodeWithTag("DescripciónField").performTextInput("Descripción de prueba del álbum")
-            composeTestRule.onNodeWithText("Agregar")
+            composeTestRule.onNodeWithTag("AddAlbum")
                 .assertIsDisplayed()
                 .performClick()
+            composeTestRule.waitUntil(timeoutMillis = 10000) {
+                composeTestRule.onAllNodesWithTag("AddedAlbum")
+                    .fetchSemanticsNodes().isNotEmpty()
+            }
+
         }
+
         println("Tiempo para testAddAlbumSuccessfullyAsCollector: $timeTaken ms")
     }
 
