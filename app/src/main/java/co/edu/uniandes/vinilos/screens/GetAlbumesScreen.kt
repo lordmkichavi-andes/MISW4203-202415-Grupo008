@@ -229,6 +229,7 @@ fun InformationBackgroundText(text: String) {
         modifier = Modifier
             .fillMaxWidth()
             .size(140.dp)
+            .testTag("AddedAlbum")
             .padding(horizontal = 16.dp)
             .background(
                 color = MaterialTheme.colorScheme.primaryContainer,

@@ -294,12 +294,14 @@ fun AddAlbumnScreen(
                         },
                         enabled = isFormValid(),
                         modifier = Modifier
+                            .testTag("AddAlbum")
                             .fillMaxWidth()
                             .height(50.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Black,
                             contentColor = Color.White
-                        )
+                        ),
+
                     ) {
                         Text(text = "Agregar", fontSize = 18.sp)
                     }
@@ -363,8 +365,13 @@ fun DatePickerDocked(
                 confirmButton = {
                     TextButton(onClick = {
                         val selectedMillis = datePickerState.selectedDateMillis
+                        print(selectedMillis)
                         if (selectedMillis != null) {
                             val date = Date(selectedMillis)
+                            selectedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date) // Para mostrar
+                            onDateSelected(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)) // Para enviar
+                        } else {
+                            val date = Date()
                             selectedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date) // Para mostrar
                             onDateSelected(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)) // Para enviar
                         }
